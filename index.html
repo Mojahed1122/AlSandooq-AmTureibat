@@ -3,129 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>صندوق أم تريبات التكافلي الاجتماعي</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--green:#0f6a42;--light:#e8f5e9;--gold:#d4a017}
-*{font-family:'Tajawal',sans-serif;box-sizing:border-box}
-body{margin:0;background:#f8faf8;color:#222}
-header{background:var(--green);color:#fff;padding:18px;text-align:center}
-header h1{margin:0;font-weight:800;font-size:22px}
-header p{margin:6px 0 0;opacity:.9}
-.slogan{background:var(--light);color:var(--green);text-align:center;padding:10px;font-weight:700;font-size:18px;border-bottom:2px solid var(--green)}
-.container{max-width:1000px;margin:auto;padding:16px}
-.card{background:#fff;border-radius:14px;padding:16px;margin:14px 0;box-shadow:0 4px 12px rgba(0,0,0,.06);border-right:5px solid var(--green)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:700px){.grid{grid-template-columns:1fr}}
-.stat{font-size:28px;font-weight:800;color:var(--green)}
-.btn{background:var(--green);color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:700;width:100%;cursor:pointer}
-.btn-gold{background:var(--gold)}
-input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:6px 0}
-.badge{display:inline-block;background:var(--light);color:var(--green);padding:4px 10px;border-radius:20px;font-size:13px;font-weight:700}
-table{width:100%;border-collapse:collapse} th,td{padding:10px;border-bottom:1px solid #eee;text-align:right}
-.mithaq{line-height:1.9;background:linear-gradient(135deg,#f0faf2,#fff);border:1px dashed var(--green)}
-</style>
+<title>AlSandooq Pro | صندوق أم تريبات - النسخة الاحترافية</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>*{font-family:'Tajawal',sans-serif} .glass{backdrop-filter:blur(16px)} .card-shadow{box-shadow:0 10px 40px rgba(0,0,0,.08)}</style>
 </head>
-<body>
-<header>
-<h1>🌿 صندوق أم تريبات التكافلي الاجتماعي</h1>
-<p>وتعاونوا على البر والتقوى | كيان مجتمعي تطوعي - غير ربحي</p>
+<body class="bg-[#f5f7f6] text-zinc-800">
+<!-- HEADER PRO -->
+<header class="sticky top-0 z-50 bg-white/80 glass border-b border-zinc-200">
+<div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-800 text-white flex items-center justify-center font-black text-xl">ص</div>
+<div><h1 class="font-black text-[17px] leading-none">صندوق أم تريبات التكافلي</h1><p class="text-[11px] text-zinc-500 mt-1">النسخة الاحترافية الرسمية • أكتوبر 2026 • غير ربحي</p></div>
+</div>
+<div class="flex gap-2"><span class="px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">«نتكافل لنقوى»</span></div>
+</div>
 </header>
-<div class="slogan">«نتكافل لنقوى… ونتعاون لنستمر»</div>
 
-<div class="container">
-
-<div class="grid">
-<div class="card"><div>إجمالي الأعضاء</div><div class="stat" id="totalMembers">0</div><span class="badge">المادة 3: العضوية مفتوحة</span></div>
-<div class="card"><div>الرصيد الحالي (حسب المادة 12)</div><div class="stat" id="totalBalance">0 جنيه</div><span class="badge">شفافية كاملة</span></div>
-<div class="card"><div>إجمالي المحصل</div><div class="stat" id="totalIn">0</div></div>
-<div class="card"><div>إجمالي المصروف</div><div class="stat" id="totalOut">0</div></div>
+<div class="max-w-7xl mx-auto px-4 py-6">
+<!-- STATS PRO -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+<div class="bg-white rounded-[20px] p-5 card-shadow border border-zinc-100"><p class="text-xs text-zinc-500 font-bold">الأعضاء النشطين</p><p class="text-3xl font-black mt-2" id="st_members">0</p><div class="mt-3 h-1.5 bg-zinc-100 rounded-full"><div class="h-full bg-emerald-600 rounded-full" style="width:75%"></div></div></div>
+<div class="bg-white rounded-[20px] p-5 card-shadow border border-zinc-100"><p class="text-xs text-zinc-500 font-bold">الرصيد الحالي</p><p class="text-3xl font-black mt-2 text-emerald-700" id="st_balance">0 ج</p><p class="text-[11px] mt-2 text-zinc-500">المادة 12: شفافية كاملة</p></div>
+<div class="bg-white rounded-[20px] p-5 card-shadow border border-zinc-100"><p class="text-xs text-zinc-500 font-bold">إجمالي المحصل</p><p class="text-3xl font-black mt-2" id="st_in">0</p><p class="text-[11px] mt-2 text-emerald-600">▲ + اشتراكات + تبرعات</p></div>
+<div class="bg-gradient-to-br from-zinc-900 to-black text-white rounded-[20px] p-5 card-shadow"><p class="text-xs text-zinc-400 font-bold">إجمالي المصروف</p><p class="text-3xl font-black mt-2" id="st_out">0</p><p class="text-[11px] mt-2 text-zinc-400">حسب قرارات موثقة - م8</p></div>
 </div>
 
-<div class="card mithaq">
-<h3>📜 ميثاق الصندوق</h3>
-<p>نحن أبناء أم تريبات، نؤمن بأن قوة المجتمع في تماسكه، وأن الإنسان لا يقف وحده في وقت الشدة.</p>
-<p><b>يقوم على:</b> التكافل — الأمانة — الشفافية — العدالة — الرحمة — حفظ الكرامة.</p>
-<p><b>تاريخ الاعتماد:</b> أكتوبر 2026 م</p>
-</div>
-
-<div class="grid">
-<div class="card">
-<h3>➕ تسجيل عضوية جديدة - المادة (3,4)</h3>
-<select id="type"><option value="5000">أسرة - 5,000 ج</option><option value="10000">فرد - 10,000 ج</option></select>
-<input id="name" placeholder="اسم العضو / رب الأسرة">
-<input id="phone" placeholder="رقم التلفون">
-<button class="btn" onclick="addMember()">تسجيل العضو</button>
-</div>
-
-<div class="card">
-<h3>💳 تسجيل سداد - المادة (5,11)</h3>
-<select id="memberSelect"><option>اختر العضو</option></select>
-<input id="amount" type="number" placeholder="المبلغ">
-<select id="payMethod"><option>بنكك</option><option>كاش</option><option>رصيد</option></select>
-<button class="btn btn-gold" onclick="addPayment()">تأكيد السداد</button>
-</div>
-</div>
-
-<div class="card">
-<h3>🆘 طلب مساعدة - المادة (7,8,9) - سرية تامة</h3>
-<div class="grid">
-<input id="helpName" placeholder="اسم صاحب الحالة (سري)">
-<select id="helpType"><option>مرض وعلاج</option><option>وفاة</option><option>حادث/كارثة/حريق</option><option>حالة إنسانية خاصة</option></select>
-</div>
-<textarea id="helpDetails" placeholder="تفاصيل الحالة - سيتم التحقق باحترام وسرية حسب المادة 13"></textarea>
-<button class="btn" onclick="addHelp()">إرسال الطلب للإدارة</button>
-<p style="font-size:12px;color:#666">تنبيه: لا يجوز صرف أي مبلغ إلا بقرار موثق - المادة 8. الحالات الحرجة أولوية - المادة 9</p>
-</div>
-
-<div class="card">
-<h3>📊 كشف حساب شفاف - المادة (12)</h3>
-<table><thead><tr><th>التاريخ</th><th>البيان</th><th>داخل</th><th>خارج</th><th>الطريقة</th></tr></thead><tbody id="ledger"></tbody></table>
-</div>
-
-<div class="card">
-<h3>📖 اللائحة الداخلية المختصرة</h3>
-<details><summary><b>المادة 4-6: الاشتراكات والموارد</b></summary><p>أسرة 5000، فرد 10000. الموارد: اشتراكات + تبرعات + هبات.</p></details>
-<details><summary><b>المادة 7: الحالات المستحقة</b></summary><p>مرض حرج، عمليات، وفاة، حوادث، حريق، حالات إنسانية.</p></details>
-<details><summary><b>المادة 11: أمين المال</b></summary><p>تحصيل، حفظ إيصالات، كشف دوري، لا صرف بدون اعتماد.</p></details>
-<details><summary><b>المادة 13: السرية</b></summary><p>يحظر نشر التفاصيل الشخصية أو الصور. الهدف حفظ الكرامة قبل المساعدة.</p></details>
-</div>
-
-</div>
-
-<script>
-let members=JSON.parse(localStorage.getItem('sandooq_members')||'[]');
-let trans=JSON.parse(localStorage.getItem('sandooq_trans')||'[]');
-function save(){localStorage.setItem('sandooq_members',JSON.stringify(members));localStorage.setItem('sandooq_trans',JSON.stringify(trans));render()}
-function addMember(){
- const t=document.getElementById('type');const name=document.getElementById('name').value;const phone=document.getElementById('phone').value;
- if(!name)return alert('اكتب الاسم');
- members.push({id:Date.now(),name,phone,type:t.options[t.selectedIndex].text,fee:+t.value});
- save();document.getElementById('name').value='';document.getElementById('phone').value='';
-}
-function addPayment(){
- const sel=document.getElementById('memberSelect');const amt=+document.getElementById('amount').value;const method=document.getElementById('payMethod').value;
- if(!amt)return alert('اكتب المبلغ');
- trans.push({date:new Date().toLocaleDateString('ar-SD'),desc:'اشتراك '+sel.value,inn:amt,out:0,method});
- save();
-}
-function addHelp(){
- const n=document.getElementById('helpName').value;const tp=document.getElementById('helpType').value;const d=document.getElementById('helpDetails').value;
- if(!n||!d)return alert('اكمل البيانات');
- trans.push({date:new Date().toLocaleDateString('ar-SD'),desc:'طلب مساعدة: '+tp+' - '+n+' (قيد المراجعة)',inn:0,out:0,method:'سري'});
- alert('تم استلام الطلب بسرية تامة - سيتم التحقق حسب المادة 8');save();
- document.getElementById('helpName').value='';document.getElementById('helpDetails').value='';
-}
-function render(){
- document.getElementById('totalMembers').innerText=members.length;
- let inn=0,out=0;trans.forEach(x=>{inn+=x.inn;out+=x.out});
- document.getElementById('totalIn').innerText=inn.toLocaleString()+' ج';
- document.getElementById('totalOut').innerText=out.toLocaleString()+' ج';
- document.getElementById('totalBalance').innerText=(inn-out).toLocaleString()+' جنيه';
- const sel=document.getElementById('memberSelect');sel.innerHTML='<option>اختر العضو</option>'+members.map(m=>`<option>${m.name}</option>`).join('');
- const leg=document.getElementById('ledger');leg.innerHTML=trans.slice().reverse().map(t=>`<tr><td>${t.date}</td><td>${t.desc}</td><td style="color:green">${t.inn?t.inn.toLocaleString():''}</td><td style="color:red">${t.out?t.out.toLocaleString():''}</td><td>${t.method}</td></tr>`).join('') || '<tr><td colspan=5>لا يوجد معاملات بعد - المادة 12</td></tr>';
-}
-render();
-</script>
-</body>
-</html>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+<!-- LEFT: FORMS -->
+<div class="lg:col-span-1 space-y-5">
+<div class="bg-white rounded-[24px] p-6 card-shadow border border-zinc-100">
+<h3 class="font-black text-[15px] flex items-center gap-2">➕ تسجيل عضوية جديدة <span class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full border">مادة 4</span></h3>
+<div class="mt-4 space-y-3">
+<select id="f_type" class="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm font-bold"><option value="5000">أسرة - 5,000 ج / شهر</option><option value="10000">فرد - 10,000 ج / شهر</option></select>
+<input id="f_name" class="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-
