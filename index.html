@@ -3,60 +3,139 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>صندوق أم تريبات</title>
+<title>صندوق التكافل - أم تريبات</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700;900&display=swap" rel="stylesheet">
-<style>*{font-family:Tajawal}</style>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>*{font-family:Tajawal} .hidden{display:none}</style>
 </head>
-<body class="bg-[#f5f7f5]">
+<body class="bg-[#f3f5f2] min-h-screen">
 
-<header class="bg-[#0e6b43] text-white p-4 text-center sticky top-0 z-10">
-<h1 class="font-black text-lg">صندوق التكافل - أم تريبات</h1>
-<p class="text-xs opacity-80">كشوفات الاشتراكات ولمسات الوفاء</p>
+<!-- Header -->
+<header class="bg-[#0a5a36] text-white p-4 flex justify-between items-center sticky top-0 z-20">
+<div>
+<h1 class="font-black text-[18px]">صندوق التكافل - أم تريبات</h1>
+<p class="text-[11px] opacity-80" id="total-badge">الاشتراك: 10,000 ج</p>
+</div>
+<button id="adminBtn" onclick="openLogin()" class="bg-white/20 border border-white/30 px-4 py-2 rounded-full text-xs font-bold">دخول الأدمن</button>
+<button id="logoutBtn" onclick="logout()" class="hidden bg-red-500 px-4 py-2 rounded-full text-xs font-bold">خروج</button>
 </header>
 
-<div class="flex gap-2 p-3 max-w-lg mx-auto">
-<button onclick="showTab('oct')" id="btn-oct" class="flex-1 bg-[#0e6b43] text-white py-3 rounded-xl font-bold">أكتوبر (53)</button>
-<button onclick="showTab('nov')" id="btn-nov" class="flex-1 bg-white border py-3 rounded-xl font-bold">نوفمبر (21)</button>
-<button onclick="showTab('wafa')" id="btn-wafa" class="flex-1 bg-white border py-3 rounded-xl font-bold">وفاء</button>
+<!-- Stats -->
+<div class="max-w-xl mx-auto p-3 grid grid-cols-3 gap-2">
+<div class="bg-white border rounded-2xl p-3 text-center"><p class="text-[11px] text-zinc-500">أكتوبر</p><p class="font-black text-lg" id="count-oct">53</p></div>
+<div class="bg-white border rounded-2xl p-3 text-center"><p class="text-[11px] text-zinc-500">نوفمبر</p><p class="font-black text-lg" id="count-nov">21</p></div>
+<div class="bg-[#0a5a36] text-white rounded-2xl p-3 text-center"><p class="text-[11px] opacity-80">الرصيد</p><p class="font-black text-sm" id="total-money">740,000 ج</p></div>
 </div>
 
-<div class="max-w-lg mx-auto p-3">
-
-<div id="tab-oct" class="bg-white rounded-2xl border p-3">
-<h2 class="font-black mb-2">اشتراك أكتوبر - 53 عضو ✅</h2>
-<div class="text-sm leading-7 h-[60vh] overflow-auto" id="oct-list"></div>
-<div class="mt-3 p-3 bg-emerald-50 rounded-xl font-bold">الإجمالي: 53 × 10,000 = 530,000 جنيه</div>
+<!-- Search -->
+<div class="max-w-xl mx-auto px-3">
+<div class="bg-white border rounded-full flex items-center px-4 py-2">
+<span>🔍</span>
+<input id="search" oninput="render()" placeholder="ابحث عن اسم..." class="w-full bg-transparent outline-none text-sm mr-2">
+</div>
 </div>
 
-<div id="tab-nov" class="bg-white rounded-2xl border p-3 hidden">
-<h2 class="font-black mb-2">اشتراك نوفمبر - 21 عضو ✅</h2>
-<div class="text-sm leading-7 h-[60vh] overflow-auto" id="nov-list"></div>
-<div class="mt-3 p-3 bg-emerald-50 rounded-xl font-bold">الإجمالي: 21 × 10,000 = 210,000 جنيه</div>
+<!-- Tabs -->
+<div class="max-w-xl mx-auto p-3 flex gap-2">
+<button onclick="switchTab('oct')" id="t-oct" class="flex-1 py-3 rounded-xl font-black bg-[#0a5a36] text-white">أكتوبر</button>
+<button onclick="switchTab('nov')" id="t-nov" class="flex-1 py-3 rounded-xl font-bold bg-white border">نوفمبر</button>
+<button onclick="switchTab('wafa')" id="t-wafa" class="flex-1 py-3 rounded-xl font-bold bg-white border">وفاء</button>
 </div>
 
-<div id="tab-wafa" class="bg-white rounded-2xl border p-3 hidden">
-<h2 class="font-black mb-2">لمسة وفاء - 3,311,000 ج</h2>
-<p class="text-xs text-zinc-500">حساب 8783249 - أيمن يوسف</p>
-<div class="text-sm leading-7 h-[60vh] overflow-auto mt-2">58 متبرع - المجموع 3,311,000 ج (القائمة الكاملة عندك)</div>
+<!-- Content -->
+<div class="max-w-xl mx-auto px-3 pb-32">
+<div id="adminPanel" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-3 mb-3">
+<p class="font-black text-sm mb-2">لوحة الأدمن ✅</p>
+<div class="flex gap-2">
+<input id="newName" placeholder="اسم العضو الجديد" class="flex-1 border rounded-xl px-3 py-2 text-sm">
+<select id="newMonth" class="border rounded-xl px-2 py-2 text-sm"><option value="oct">أكتوبر</option><option value="nov">نوفمبر</option></select>
+<button onclick="addMember()" class="bg-[#0a5a36] text-white px-4 py-2 rounded-xl text-sm font-bold">إضافة</button>
+</div>
+<p class="text-[10px] text-zinc-500 mt-2">* الإضافة ح تظهر لكل الناس بعد ما تعمل حفظ (حاليا في جهازك، الخطوة الجاية ح نربطو بالانترنت)</p>
 </div>
 
+<div id="list" class="bg-white border rounded-2xl divide-y max-h-[60vh] overflow-auto"></div>
+</div>
+
+<!-- Login Modal -->
+<div id="loginModal" class="hidden fixed inset-0 bg-black/50 z-30 flex items-center justify-center p-4">
+<div class="bg-white rounded-[24px] w-full max-w-sm p-6">
+<h2 class="font-black text-lg mb-1">دخول الأدمن</h2>
+<p class="text-xs text-zinc-500 mb-4">ادخل كلمة السر الخاصة بالصندوق</p>
+<input id="passInput" type="password" placeholder="كلمة السر" class="w-full border rounded-xl px-4 py-3 text-sm mb-3">
+<button onclick="checkPass()" class="w-full bg-[#0a5a36] text-white py-3 rounded-xl font-bold">دخول</button>
+<button onclick="closeLogin()" class="w-full mt-2 py-2 text-xs text-zinc-500">إلغاء</button>
+<p id="passError" class="hidden text-xs text-red-500 mt-2 text-center">كلمة السر خطأ</p>
+</div>
 </div>
 
 <script>
-const oct = ["محمد احمد حمدان","عمر بشير هجو","التهامي عبدالله","مجاهد صلاح","محمد انورالسادات","أحمد يحيى","بشرى الأمين","أمير ادم","منذر عبدالله","محمد ادم","محمد الباقر عثمان","بادي عبد القادر","منتصر الصديق","امين بابكر","أحمد عبدالوهاب","النور محمد يوسف (4 شهور)","الأمين محمد الأمين","رضوان بلال","خاطر عبدالله","مصطفي النذير","عبد الحميد الزبير","الزبير رجب","أمال عوض","مهند محمد (شهرين)","السر عثمان","حمدالنيل حامد","فتح الرحمن الجعلي","حامد اسماعيل","ضياء الدين","محمد عبدالله بخيت 100ألف","عبدالله محمد عبدالله 100ألف","احمدجادالله 100","ابتهال شهرين","مرتضى آدم","صديق عبد الرحيم","السيده عبدالقادر","مجتبى حامد","منذر جلال","محمد محجوب","شوقى موسي","رافع الامين","عبير عبدالله","الزكي بابكر","أيمن يحيى","محمد الامين 30","سعد مصعب","عبدالعظيم 3شهور","عبدالله الأمين","موسى الطاهر","الفاضل ميرغني","يونس السماني","بشير محمد احمد","ميساء يوسف"];
-const nov = ["عبدالعظيم عباس","مهند محمد احمد","النور محمد يوسف","محمد عبدالله بخيت","عبدالله محمد عبدالله","احمد يحي علي","شوقي موسى","زكي بابكر","بشري الأمين","رفع الأمين","محمد الباقر","د. ابتهال عبدالغني","أحمد جادالله","محمد ابراهيم جباره","امين بابكر","السر عثمان","عبدالله الأمين ادم","محمد الامين زين العابدين","الأمين محمد الأمين"];
-document.getElementById('oct-list').innerHTML = oct.map((n,i)=>`${i+1}/ ${n} ✅`).join('<br>');
-document.getElementById('nov-list').innerHTML = nov.map((n,i)=>`${i+1}/ ${n} ✅`).join('<br>');
-function showTab(t){
-document.getElementById('tab-oct').classList.add('hidden');
-document.getElementById('tab-nov').classList.add('hidden');
-document.getElementById('tab-wafa').classList.add('hidden');
-document.getElementById('tab-'+t).classList.remove('hidden');
-document.getElementById('btn-oct').className = t=='oct' ? 'flex-1 bg-[#0e6b43] text-white py-3 rounded-xl font-bold' : 'flex-1 bg-white border py-3 rounded-xl font-bold';
-document.getElementById('btn-nov').className = t=='nov' ? 'flex-1 bg-[#0e6b43] text-white py-3 rounded-xl font-bold' : 'flex-1 bg-white border py-3 rounded-xl font-bold';
-document.getElementById('btn-wafa').className = t=='wafa' ? 'flex-1 bg-[#0e6b43] text-white py-3 rounded-xl font-bold' : 'flex-1 bg-white border py-3 rounded-xl font-bold';
+// --- البيانات الأولية ---
+let data = JSON.parse(localStorage.getItem('umtreibat_v1') || 'null') || {
+oct: ["محمد احمد حمدان","عمر بشير هجو","التهامي عبدالله","مجاهد صلاح","محمد انورالسادات","أحمد يحيى","بشرى الأمين","أمير ادم","منذر عبدالله","محمد ادم","محمد الباقر عثمان","بادي عبد القادر","منتصر الصديق","امين بابكر","أحمد عبدالوهاب","النور محمد يوسف","الأمين محمد الأمين","رضوان بلال","خاطر عبدالله","مصطفي النذير","عبد الحميد الزبير","الزبير رجب","أمال عوض","مهند محمد احمد","السر عثمان","حمدالنيل حامد","فتح الرحمن الجعلي","حامد اسماعيل","ضياء الدين","محمد عبدالله بخيت","عبدالله محمد عبدالله","احمد جادالله","ابتهال عبدالغني","مرتضى آدم","صديق عبد الرحيم","السيده عبدالقادر","مجتبى حامد","منذر جلال","محمد محجوب","شوقى موسي","رافع الامين","عبير عبدالله","الزكي بابكر","أيمن يحيى","محمد الامين","سعد مصعب","عبدالعظيم عباس","عبدالله الأمين","موسى الطاهر","الفاضل ميرغني","يونس السماني","بشير محمد احمد","ميساء يوسف"],
+nov: ["عبدالعظيم عباس","مهند محمد احمد","النور محمد يوسف","محمد عبدالله بخيت","عبدالله محمد عبدالله","احمد يحي علي","شوقي موسى","زكي بابكر","بشري الأمين","رفع الأمين","محمد الباقر","د. ابتهال عبدالغني","أحمد جادالله","محمد ابراهيم جباره","امين بابكر","السر عثمان","عبدالله الأمين ادم","محمد الامين زين العابدين","الأمين محمد الأمين","منذر عبدالله","عمر بشير"],
+wafa: [{n:"أمير آدم أحمد",a:150000},{n:"ياسر العشاري",a:150000},{n:"مصطفى الفكي",a:200000},{n:"أيمن محمد يوسف",a:111000},{n:"المجموع الكلي",a:3311000}]
+};
+
+const PASS = "11221122Mo@@@"; // كلمة سرك
+let currentTab = 'oct';
+let isAdmin = localStorage.getItem('isAdmin') === '1';
+
+function save(){ localStorage.setItem('umtreibat_v1', JSON.stringify(data)); }
+function switchTab(t){
+currentTab=t;
+document.getElementById('t-oct').className = t=='oct' ? 'flex-1 py-3 rounded-xl font-black bg-[#0a5a36] text-white' : 'flex-1 py-3 rounded-xl font-bold bg-white border';
+document.getElementById('t-nov').className = t=='nov' ? 'flex-1 py-3 rounded-xl font-black bg-[#0a5a36] text-white' : 'flex-1 py-3 rounded-xl font-bold bg-white border';
+document.getElementById('t-wafa').className = t=='wafa' ? 'flex-1 py-3 rounded-xl font-black bg-[#0a5a36] text-white' : 'flex-1 py-3 rounded-xl font-bold bg-white border';
+render();
 }
+function render(){
+const q = (document.getElementById('search').value || '').trim();
+const listEl = document.getElementById('list');
+let arr = [];
+if(currentTab==='wafa'){ arr = data.wafa; } else { arr = data[currentTab].map(n=>({n})); }
+let filtered = arr.filter(x=> x.n.includes(q));
+listEl.innerHTML = filtered.map((x,i)=>{
+if(currentTab==='wafa'){
+return `<div class="p-3 flex justify-between text-sm"><span>${i+1}. ${x.n}</span><span class="font-bold">${x.a?.toLocaleString()} ج</span></div>`;
+} else {
+return `<div class="p-3 flex justify-between text-sm"><span>${i+1}. ${x.n} ✅</span><span class="text-zinc-400 text-xs">10,000</span></div>`;
+}
+}).join('') || `<div class="p-6 text-center text-xs text-zinc-500">لا يوجد نتائج</div>`;
+
+document.getElementById('count-oct').innerText = data.oct.length;
+document.getElementById('count-nov').innerText = data.nov.length;
+document.getElementById('total-money').innerText = ((data.oct.length + data.nov.length)*10000).toLocaleString() + ' ج';
+}
+function openLogin(){ document.getElementById('loginModal').classList.remove('hidden'); }
+function closeLogin(){ document.getElementById('loginModal').classList.add('hidden'); document.getElementById('passError').classList.add('hidden'); }
+function checkPass(){
+const v = document.getElementById('passInput').value;
+if(v===PASS){ isAdmin=true; localStorage.setItem('isAdmin','1'); closeLogin(); updateAdminUI(); } else { document.getElementById('passError').classList.remove('hidden'); }
+}
+function logout(){ isAdmin=false; localStorage.removeItem('isAdmin'); updateAdminUI(); }
+function updateAdminUI(){
+if(isAdmin){
+document.getElementById('adminPanel').classList.remove('hidden');
+document.getElementById('adminBtn').classList.add('hidden');
+document.getElementById('logoutBtn').classList.remove('hidden');
+} else {
+document.getElementById('adminPanel').classList.add('hidden');
+document.getElementById('adminBtn').classList.remove('hidden');
+document.getElementById('logoutBtn').classList.add('hidden');
+}
+}
+function addMember(){
+const name = document.getElementById('newName').value.trim();
+const month = document.getElementById('newMonth').value;
+if(!name) return alert('اكتب الاسم');
+if(month==='oct'){ data.oct.push(name); } else { data.nov.push(name); }
+save(); document.getElementById('newName').value=''; render();
+alert('تمت الإضافة ✅');
+}
+
+// init
+updateAdminUI(); render();
 </script>
 </body>
 </html>
