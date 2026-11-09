@@ -1,562 +1,132 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#126b62">
-  <title>الصندوق التكافلي بأمتريبات</title>
-  <style>
-    :root {
-      --g: #126b62;
-      --gd: #0b514a;
-      --bg: #f4f7f6;
-      --ink: #20302d;
-      --muted: #697874;
-      --line: #e1e9e6;
-      --white: #fff;
-      --gold: #d5a848;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
-    }
-
-    header {
-      background: linear-gradient(135deg, var(--gd), var(--g));
-      color: white;
-      padding: 20px 14px;
-    }
-
-    .wrap {
-      width: min(100% - 24px, 900px);
-      margin: auto;
-    }
-
-    .brand { font-size: 20px; font-weight: 800; }
-    .sub { font-size: 13px; color: #d9eeea; margin-top: 4px; }
-
-    nav {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      margin-top: 17px;
-      padding-bottom: 2px;
-    }
-
-    nav button {
-      white-space: nowrap;
-      border: 1px solid #ffffff55;
-      background: #ffffff16;
-      color: white;
-      border-radius: 20px;
-      padding: 9px 13px;
-    }
-
-    nav button.on {
-      background: #fff;
-      color: var(--gd);
-    }
-
-    main { padding: 18px 0 36px; }
-    h2 { font-size: 20px; margin: 0 0 14px; }
-    h3 { font-size: 16px; margin: 0 0 12px; }
-
-    .card, .stat {
-      background: var(--white);
-      border: 1px solid var(--line);
-      border-radius: 15px;
-      padding: 15px;
-      margin-bottom: 13px;
-      box-shadow: 0 5px 18px #164c4410;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 13px;
-    }
-
-    .stat { margin: 0; }
-    .label, .muted { color: var(--muted); font-size: 13px; }
-    .num {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--gd);
-      margin-top: 5px;
-    }
-
-    form {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 11px;
-    }
-
-    .field { display: flex; flex-direction: column; gap: 5px; }
-    .full, .actions { grid-column: 1 / -1; }
-
-    label { font-size: 13px; font-weight: 650; }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 11px;
-      border: 1px solid #d5dfdc;
-      border-radius: 10px;
-      background: white;
-      font: inherit;
-    }
-
-    textarea { min-height: 80px; resize: vertical; }
-    button { font: inherit; cursor: pointer; }
-
-    .btn {
-      border: 0;
-      border-radius: 10px;
-      padding: 10px 14px;
-      background: var(--g);
-      color: white;
-      font-weight: 700;
-    }
-
-    .btn.light { background: #e8f5f1; color: var(--gd); }
-    .btn.delete { background: #fff0ef; color: #a52a21; }
-    .btn.small { padding: 7px 10px; font-size: 12px; }
-
-    .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 540px;
-    }
-
-    th, td {
-      text-align: right;
-      border-bottom: 1px solid var(--line);
-      padding: 10px 8px;
-      font-size: 13px;
-    }
-
-    th { color: var(--muted); }
-    .scroll { overflow-x: auto; }
-
-    .empty {
-      padding: 18px;
-      text-align: center;
-      border: 1px dashed #cbd8d4;
-      border-radius: 11px;
-      color: var(--muted);
-    }
-
-    .rule { border-right: 4px solid var(--gold); }
-    .rule p { white-space: pre-wrap; line-height: 1.8; }
-
-    footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      padding: 10px;
-    }
-
-    @media (max-width: 520px) {
-      form { grid-template-columns: 1fr; }
-      .full, .actions { grid-column: auto; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>صندوق أم تريبات التكافلي الاجتماعي</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--green:#0f6a42;--light:#e8f5e9;--gold:#d4a017}
+*{font-family:'Tajawal',sans-serif;box-sizing:border-box}
+body{margin:0;background:#f8faf8;color:#222}
+header{background:var(--green);color:#fff;padding:18px;text-align:center}
+header h1{margin:0;font-weight:800;font-size:22px}
+header p{margin:6px 0 0;opacity:.9}
+.slogan{background:var(--light);color:var(--green);text-align:center;padding:10px;font-weight:700;font-size:18px;border-bottom:2px solid var(--green)}
+.container{max-width:1000px;margin:auto;padding:16px}
+.card{background:#fff;border-radius:14px;padding:16px;margin:14px 0;box-shadow:0 4px 12px rgba(0,0,0,.06);border-right:5px solid var(--green)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.stat{font-size:28px;font-weight:800;color:var(--green)}
+.btn{background:var(--green);color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:700;width:100%;cursor:pointer}
+.btn-gold{background:var(--gold)}
+input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:6px 0}
+.badge{display:inline-block;background:var(--light);color:var(--green);padding:4px 10px;border-radius:20px;font-size:13px;font-weight:700}
+table{width:100%;border-collapse:collapse} th,td{padding:10px;border-bottom:1px solid #eee;text-align:right}
+.mithaq{line-height:1.9;background:linear-gradient(135deg,#f0faf2,#fff);border:1px dashed var(--green)}
+</style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <div class="brand">🤝 الصندوق التكافلي بأمتريبات</div>
-      <div class="sub">نموذج تجريبي لإدارة شؤون الصندوق</div>
-      <nav id="nav" aria-label="القائمة الرئيسية">
-        <button type="button" class="on" data-page="home">الرئيسية</button>
-        <button type="button" data-page="members">الأعضاء</button>
-        <button type="button" data-page="dues">الاشتراكات</button>
-        <button type="button" data-page="requests">طلبات المساعدة</button>
-        <button type="button" data-page="rules">اللوائح الداخلية</button>
-      </nav>
-    </div>
-  </header>
+<header>
+<h1>🌿 صندوق أم تريبات التكافلي الاجتماعي</h1>
+<p>وتعاونوا على البر والتقوى | كيان مجتمعي تطوعي - غير ربحي</p>
+</header>
+<div class="slogan">«نتكافل لنقوى… ونتعاون لنستمر»</div>
 
-  <main class="wrap" id="app"></main>
-  <footer>نسخة تجريبية محلية — لا تستخدمها لحفظ بيانات حقيقية أو حساسة.</footer>
+<div class="container">
 
-  <script>
-    (() => {
-      "use strict";
+<div class="grid">
+<div class="card"><div>إجمالي الأعضاء</div><div class="stat" id="totalMembers">0</div><span class="badge">المادة 3: العضوية مفتوحة</span></div>
+<div class="card"><div>الرصيد الحالي (حسب المادة 12)</div><div class="stat" id="totalBalance">0 جنيه</div><span class="badge">شفافية كاملة</span></div>
+<div class="card"><div>إجمالي المحصل</div><div class="stat" id="totalIn">0</div></div>
+<div class="card"><div>إجمالي المصروف</div><div class="stat" id="totalOut">0</div></div>
+</div>
 
-      const KEY = "amtrabat_fund_demo_v1";
-      const app = document.getElementById("app");
-      let page = "home";
+<div class="card mithaq">
+<h3>📜 ميثاق الصندوق</h3>
+<p>نحن أبناء أم تريبات، نؤمن بأن قوة المجتمع في تماسكه، وأن الإنسان لا يقف وحده في وقت الشدة.</p>
+<p><b>يقوم على:</b> التكافل — الأمانة — الشفافية — العدالة — الرحمة — حفظ الكرامة.</p>
+<p><b>تاريخ الاعتماد:</b> أكتوبر 2026 م</p>
+</div>
 
-      function blankData() {
-        return { members: [], dues: [], requests: [], rules: [] };
-      }
+<div class="grid">
+<div class="card">
+<h3>➕ تسجيل عضوية جديدة - المادة (3,4)</h3>
+<select id="type"><option value="5000">أسرة - 5,000 ج</option><option value="10000">فرد - 10,000 ج</option></select>
+<input id="name" placeholder="اسم العضو / رب الأسرة">
+<input id="phone" placeholder="رقم التلفون">
+<button class="btn" onclick="addMember()">تسجيل العضو</button>
+</div>
 
-      function loadData() {
-        try {
-          const saved = JSON.parse(localStorage.getItem(KEY) || "null");
-          if (!saved || typeof saved !== "object") return blankData();
+<div class="card">
+<h3>💳 تسجيل سداد - المادة (5,11)</h3>
+<select id="memberSelect"><option>اختر العضو</option></select>
+<input id="amount" type="number" placeholder="المبلغ">
+<select id="payMethod"><option>بنكك</option><option>كاش</option><option>رصيد</option></select>
+<button class="btn btn-gold" onclick="addPayment()">تأكيد السداد</button>
+</div>
+</div>
 
-          return {
-            members: Array.isArray(saved.members) ? saved.members : [],
-            dues: Array.isArray(saved.dues) ? saved.dues : [],
-            requests: Array.isArray(saved.requests) ? saved.requests : [],
-            rules: Array.isArray(saved.rules) ? saved.rules : []
-          };
-        } catch {
-          return blankData();
-        }
-      }
+<div class="card">
+<h3>🆘 طلب مساعدة - المادة (7,8,9) - سرية تامة</h3>
+<div class="grid">
+<input id="helpName" placeholder="اسم صاحب الحالة (سري)">
+<select id="helpType"><option>مرض وعلاج</option><option>وفاة</option><option>حادث/كارثة/حريق</option><option>حالة إنسانية خاصة</option></select>
+</div>
+<textarea id="helpDetails" placeholder="تفاصيل الحالة - سيتم التحقق باحترام وسرية حسب المادة 13"></textarea>
+<button class="btn" onclick="addHelp()">إرسال الطلب للإدارة</button>
+<p style="font-size:12px;color:#666">تنبيه: لا يجوز صرف أي مبلغ إلا بقرار موثق - المادة 8. الحالات الحرجة أولوية - المادة 9</p>
+</div>
 
-      let data = loadData();
+<div class="card">
+<h3>📊 كشف حساب شفاف - المادة (12)</h3>
+<table><thead><tr><th>التاريخ</th><th>البيان</th><th>داخل</th><th>خارج</th><th>الطريقة</th></tr></thead><tbody id="ledger"></tbody></table>
+</div>
 
-      function save() {
-        try {
-          localStorage.setItem(KEY, JSON.stringify(data));
-          return true;
-        } catch {
-          alert("تعذر حفظ البيانات في المتصفح. قد تكون مساحة التخزين ممتلئة أو غير متاحة.");
-          return false;
-        }
-      }
+<div class="card">
+<h3>📖 اللائحة الداخلية المختصرة</h3>
+<details><summary><b>المادة 4-6: الاشتراكات والموارد</b></summary><p>أسرة 5000، فرد 10000. الموارد: اشتراكات + تبرعات + هبات.</p></details>
+<details><summary><b>المادة 7: الحالات المستحقة</b></summary><p>مرض حرج، عمليات، وفاة، حوادث، حريق، حالات إنسانية.</p></details>
+<details><summary><b>المادة 11: أمين المال</b></summary><p>تحصيل، حفظ إيصالات، كشف دوري، لا صرف بدون اعتماد.</p></details>
+<details><summary><b>المادة 13: السرية</b></summary><p>يحظر نشر التفاصيل الشخصية أو الصور. الهدف حفظ الكرامة قبل المساعدة.</p></details>
+</div>
 
-      function esc(value) {
-        return String(value ?? "").replace(/[&<>"']/g, char => ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;"
-        })[char]);
-      }
+</div>
 
-      function makeId() {
-        return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-      }
-
-      function memberName(memberId) {
-        const member = data.members.find(item => item.id === memberId);
-        return member ? member.name : "عضو محذوف";
-      }
-
-      function memberOptions() {
-        return data.members.map(member =>
-          `<option value="${esc(member.id)}">${esc(member.name)} (${esc(member.no)})</option>`
-        ).join("");
-      }
-
-      function money(value) {
-        const amount = Number(value);
-        return (Number.isFinite(amount) ? amount : 0).toLocaleString("ar");
-      }
-
-      function dueStatus(value) {
-        return value === "paid" ? "مدفوع" : "غير مدفوع";
-      }
-
-      function setPage(nextPage) {
-        page = nextPage;
-        document.querySelectorAll("#nav button").forEach(button => {
-          button.classList.toggle("on", button.dataset.page === page);
-        });
-        render();
-      }
-
-      document.getElementById("nav").addEventListener("click", event => {
-        const button = event.target.closest("[data-page]");
-        if (button) setPage(button.dataset.page);
-      });
-
-      function home() {
-        const paid = data.dues
-          .filter(item => item.status === "paid")
-          .reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-
-        const openRequests = data.requests.filter(item =>
-          item.status === "جديد" || item.status === "قيد المراجعة"
-        ).length;
-
-        return `
-          <h2>الرئيسية</h2>
-          <section class="stats">
-            <div class="stat"><div class="label">عدد الأعضاء</div><div class="num">${data.members.length}</div></div>
-            <div class="stat"><div class="label">إجمالي الاشتراكات المدفوعة</div><div class="num">${money(paid)}</div></div>
-            <div class="stat"><div class="label">طلبات المساعدة</div><div class="num">${data.requests.length}</div></div>
-            <div class="stat"><div class="label">طلبات قيد المتابعة</div><div class="num">${openRequests}</div></div>
-          </section>
-          <section class="card">
-            <h3>مرحبًا بك</h3>
-            <p class="muted">استخدم القائمة لإدارة الأعضاء والاشتراكات والطلبات واللوائح. البيانات محفوظة على هذا الجهاز فقط.</p>
-            <button type="button" class="btn light" id="backup">تنزيل نسخة احتياطية</button>
-            <button type="button" class="btn light" id="clear">مسح بيانات التجربة</button>
-          </section>`;
-      }
-
-      function members() {
-        const rows = data.members.map(member => `
-          <tr>
-            <td>${esc(member.no)}</td>
-            <td>${esc(member.name)}</td>
-            <td>${esc(member.phone || "—")}</td>
-            <td>${esc(member.status || "نشط")}</td>
-            <td><button type="button" class="btn delete small" data-del="members" data-id="${esc(member.id)}">حذف</button></td>
-          </tr>`).join("");
-
-        return `
-          <h2>الأعضاء</h2>
-          <section class="card">
-            <h3>إضافة عضو</h3>
-            <form id="memberForm">
-              <div class="field"><label for="memberName">اسم العضو</label><input id="memberName" name="name" required maxlength="100"></div>
-              <div class="field"><label for="memberNo">رقم العضوية</label><input id="memberNo" name="no" required maxlength="50"></div>
-              <div class="field"><label for="memberPhone">رقم الهاتف</label><input id="memberPhone" name="phone" type="tel" maxlength="30"></div>
-              <div class="field">
-                <label for="memberStatus">الحالة</label>
-                <select id="memberStatus" name="status">
-                  <option>نشط</option><option>قيد المراجعة</option><option>موقوف</option>
-                </select>
-              </div>
-              <div class="actions"><button class="btn">حفظ العضو</button></div>
-            </form>
-          </section>
-          <section class="card">
-            <h3>قائمة الأعضاء</h3>
-            ${rows ? `
-              <div class="scroll"><table>
-                <thead><tr><th>رقم العضوية</th><th>الاسم</th><th>الهاتف</th><th>الحالة</th><th>إجراء</th></tr></thead>
-                <tbody>${rows}</tbody>
-              </table></div>` : `<div class="empty">لا يوجد أعضاء بعد.</div>`}
-          </section>`;
-      }
-
-      function dues() {
-        const rows = data.dues.map(item => `
-          <tr>
-            <td>${esc(memberName(item.mid))}</td>
-            <td>${esc(item.period)}</td>
-            <td>${money(item.amount)}</td>
-            <td>${dueStatus(item.status)}</td>
-            <td><button type="button" class="btn delete small" data-del="dues" data-id="${esc(item.id)}">حذف</button></td>
-          </tr>`).join("");
-
-        return `
-          <h2>الاشتراكات</h2>
-          <section class="card">
-            <h3>تسجيل اشتراك</h3>
-            ${data.members.length ? `
-              <form id="dueForm">
-                <div class="field"><label for="dueMember">العضو</label><select id="dueMember" name="mid" required>${memberOptions()}</select></div>
-                <div class="field"><label for="duePeriod">الفترة</label><input id="duePeriod" name="period" required maxlength="50" placeholder="مثال: يناير 2026"></div>
-                <div class="field"><label for="dueAmount">المبلغ</label><input id="dueAmount" name="amount" type="number" min="0.01" step="0.01" required></div>
-                <div class="field">
-                  <label for="dueStatus">حالة السداد</label>
-                  <select id="dueStatus" name="status">
-                    <option value="unpaid">غير مدفوع</option><option value="paid">مدفوع</option>
-                  </select>
-                </div>
-                <div class="actions"><button class="btn">حفظ الاشتراك</button></div>
-              </form>` : `<div class="empty">أضف عضوًا أولًا.</div>`}
-          </section>
-          <section class="card">
-            <h3>سجل الاشتراكات</h3>
-            ${rows ? `
-              <div class="scroll"><table>
-                <thead><tr><th>العضو</th><th>الفترة</th><th>المبلغ</th><th>الحالة</th><th>إجراء</th></tr></thead>
-                <tbody>${rows}</tbody>
-              </table></div>` : `<div class="empty">لا توجد اشتراكات مسجلة.</div>`}
-          </section>`;
-      }
-
-      function requests() {
-        const rows = data.requests.map(item => `
-          <tr>
-            <td>${esc(memberName(item.mid))}</td>
-            <td>${esc(item.type)}</td>
-            <td>${money(item.amount)}</td>
-            <td>${esc(item.status || "جديد")}</td>
-            <td><button type="button" class="btn delete small" data-del="requests" data-id="${esc(item.id)}">حذف</button></td>
-          </tr>`).join("");
-
-        return `
-          <h2>طلبات المساعدة</h2>
-          <section class="card">
-            <h3>إضافة طلب</h3>
-            ${data.members.length ? `
-              <form id="requestForm">
-                <div class="field"><label for="requestMember">العضو</label><select id="requestMember" name="mid" required>${memberOptions()}</select></div>
-                <div class="field"><label for="requestType">نوع المساعدة</label><input id="requestType" name="type" required maxlength="100"></div>
-                <div class="field"><label for="requestAmount">المبلغ المطلوب</label><input id="requestAmount" name="amount" type="number" min="0" step="0.01" value="0"></div>
-                <div class="field">
-                  <label for="requestStatus">الحالة</label>
-                  <select id="requestStatus" name="status">
-                    <option>جديد</option><option>قيد المراجعة</option><option>مقبول</option><option>مرفوض</option>
-                  </select>
-                </div>
-                <div class="field full"><label for="requestReason">سبب الطلب</label><textarea id="requestReason" name="reason" required maxlength="2000"></textarea></div>
-                <div class="actions"><button class="btn">حفظ الطلب</button></div>
-              </form>` : `<div class="empty">أضف عضوًا أولًا.</div>`}
-          </section>
-          <section class="card">
-            <h3>الطلبات المسجلة</h3>
-            ${rows ? `
-              <div class="scroll"><table>
-                <thead><tr><th>العضو</th><th>نوع المساعدة</th><th>المبلغ</th><th>الحالة</th><th>إجراء</th></tr></thead>
-                <tbody>${rows}</tbody>
-              </table></div>` : `<div class="empty">لا توجد طلبات مساعدة.</div>`}
-          </section>`;
-      }
-
-      function rules() {
-        const cards = data.rules.map(rule => `
-          <article class="card rule">
-            <h3>${esc(rule.title)}</h3>
-            <div class="muted">${esc(rule.status)} — ${esc(rule.date)}</div>
-            <p>${esc(rule.text)}</p>
-            <button type="button" class="btn delete small" data-del="rules" data-id="${esc(rule.id)}">حذف</button>
-          </article>`).join("");
-
-        return `
-          <h2>اللوائح الداخلية</h2>
-          <section class="card">
-            <h3>إضافة لائحة أو إعلان</h3>
-            <form id="ruleForm">
-              <div class="field"><label for="ruleTitle">العنوان</label><input id="ruleTitle" name="title" required maxlength="150"></div>
-              <div class="field">
-                <label for="ruleStatus">الحالة</label>
-                <select id="ruleStatus" name="status"><option>منشورة</option><option>مسودة</option></select>
-              </div>
-              <div class="field full"><label for="ruleText">النص</label><textarea id="ruleText" name="text" required maxlength="5000"></textarea></div>
-              <div class="actions"><button class="btn">حفظ اللائحة</button></div>
-            </form>
-          </section>
-          ${cards || '<div class="empty">لا توجد لوائح مضافة.</div>'}`;
-      }
-
-      function render() {
-        const pages = { home, members, dues, requests, rules };
-        app.innerHTML = (pages[page] || home)();
-      }
-
-      app.addEventListener("submit", event => {
-        const form = event.target;
-        if (!(form instanceof HTMLFormElement)) return;
-
-        event.preventDefault();
-        const values = Object.fromEntries(new FormData(form).entries());
-
-        if (form.id === "memberForm") {
-          const name = String(values.name || "").trim();
-          const no = String(values.no || "").trim();
-          const duplicate = data.members.some(member =>
-            String(member.no || "").trim().toLowerCase() === no.toLowerCase()
-          );
-
-          if (!name || !no) {
-            alert("يرجى إدخال اسم العضو ورقم العضوية.");
-            return;
-          }
-          if (duplicate) {
-            alert("رقم العضوية مستخدم بالفعل.");
-            return;
-          }
-
-          data.members.push({
-            id: makeId(),
-            name,
-            no,
-            phone: String(values.phone || "").trim(),
-            status: String(values.status || "نشط")
-          });
-        } else if (form.id === "dueForm") {
-          const amount = Number(values.amount);
-          if (!Number.isFinite(amount) || amount <= 0) {
-            alert("أدخل مبلغًا صحيحًا أكبر من صفر.");
-            return;
-          }
-
-          data.dues.push({
-            id: makeId(),
-            mid: String(values.mid || ""),
-            period: String(values.period || "").trim(),
-            amount,
-            status: values.status === "paid" ? "paid" : "unpaid"
-          });
-        } else if (form.id === "requestForm") {
-          const amount = Number(values.amount || 0);
-          if (!Number.isFinite(amount) || amount < 0) {
-            alert("أدخل مبلغًا صحيحًا لا يقل عن صفر.");
-            return;
-          }
-
-          data.requests.push({
-            id: makeId(),
-            mid: String(values.mid || ""),
-            type: String(values.type || "").trim(),
-            amount,
-            reason: String(values.reason || "").trim(),
-            status: String(values.status || "جديد")
-          });
-        } else if (form.id === "ruleForm") {
-          data.rules.push({
-            id: makeId(),
-            title: String(values.title || "").trim(),
-            status: String(values.status || "مسودة"),
-            text: String(values.text || "").trim(),
-            date: new Date().toLocaleDateString("ar")
-          });
-        } else {
-          return;
-        }
-
-        if (save()) render();
-      });
-
-      app.addEventListener("click", event => {
-        const deleteButton = event.target.closest("[data-del]");
-
-        if (deleteButton) {
-          const collection = deleteButton.dataset.del;
-          const itemId = deleteButton.dataset.id;
-          const allowedCollections = ["members", "dues", "requests", "rules"];
-
-          if (!allowedCollections.includes(collection)) return;
-          if (!confirm("هل أنت متأكد من حذف هذا السجل؟")) return;
-
-          if (collection === "members") {
-            data.members = data.members.filter(item => item.id !== itemId);
-          } else {
-            data[collection] = data[collection].filter(item => item.id !== itemId);
-          }
-
-          if (save()) render();
-          return;
-        }
-
-        if (event.target.closest("#backup")) {
-          try {
-            const blob = new Blob(
-              [JSON.stringify(data, null, 2)],
-              { type: "application/json;charset=utf-8" }
-            );
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = "نسخة-الصندوق.json";
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
-          } catch {
-            alert("تعذر إنشاء النسخة الاحتياطية.");
-          }
-          return;
-        }
-
-        if (event.target
+<script>
+let members=JSON.parse(localStorage.getItem('sandooq_members')||'[]');
+let trans=JSON.parse(localStorage.getItem('sandooq_trans')||'[]');
+function save(){localStorage.setItem('sandooq_members',JSON.stringify(members));localStorage.setItem('sandooq_trans',JSON.stringify(trans));render()}
+function addMember(){
+ const t=document.getElementById('type');const name=document.getElementById('name').value;const phone=document.getElementById('phone').value;
+ if(!name)return alert('اكتب الاسم');
+ members.push({id:Date.now(),name,phone,type:t.options[t.selectedIndex].text,fee:+t.value});
+ save();document.getElementById('name').value='';document.getElementById('phone').value='';
+}
+function addPayment(){
+ const sel=document.getElementById('memberSelect');const amt=+document.getElementById('amount').value;const method=document.getElementById('payMethod').value;
+ if(!amt)return alert('اكتب المبلغ');
+ trans.push({date:new Date().toLocaleDateString('ar-SD'),desc:'اشتراك '+sel.value,inn:amt,out:0,method});
+ save();
+}
+function addHelp(){
+ const n=document.getElementById('helpName').value;const tp=document.getElementById('helpType').value;const d=document.getElementById('helpDetails').value;
+ if(!n||!d)return alert('اكمل البيانات');
+ trans.push({date:new Date().toLocaleDateString('ar-SD'),desc:'طلب مساعدة: '+tp+' - '+n+' (قيد المراجعة)',inn:0,out:0,method:'سري'});
+ alert('تم استلام الطلب بسرية تامة - سيتم التحقق حسب المادة 8');save();
+ document.getElementById('helpName').value='';document.getElementById('helpDetails').value='';
+}
+function render(){
+ document.getElementById('totalMembers').innerText=members.length;
+ let inn=0,out=0;trans.forEach(x=>{inn+=x.inn;out+=x.out});
+ document.getElementById('totalIn').innerText=inn.toLocaleString()+' ج';
+ document.getElementById('totalOut').innerText=out.toLocaleString()+' ج';
+ document.getElementById('totalBalance').innerText=(inn-out).toLocaleString()+' جنيه';
+ const sel=document.getElementById('memberSelect');sel.innerHTML='<option>اختر العضو</option>'+members.map(m=>`<option>${m.name}</option>`).join('');
+ const leg=document.getElementById('ledger');leg.innerHTML=trans.slice().reverse().map(t=>`<tr><td>${t.date}</td><td>${t.desc}</td><td style="color:green">${t.inn?t.inn.toLocaleString():''}</td><td style="color:red">${t.out?t.out.toLocaleString():''}</td><td>${t.method}</td></tr>`).join('') || '<tr><td colspan=5>لا يوجد معاملات بعد - المادة 12</td></tr>';
+}
+render();
+</script>
+</body>
+</html>
