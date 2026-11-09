@@ -1,84 +1,62 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>صندوق أم تريبات - التطبيق الرسمي</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>صندوق أم تريبات</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700;800;900&display=swap" rel="stylesheet">
-<style>*{font-family:Tajawal} .no-scrollbar::-webkit-scrollbar{display:none} .page{display:none} .page.active{display:block} .nav-active{color:#0e6b43 !important;background:#e8f5e9 !important}</style>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700;900&display=swap" rel="stylesheet">
+<style>*{font-family:Tajawal}</style>
 </head>
-<body class="bg-[#f3f6f4] pb-24">
+<body class="bg-[#f5f7f5]">
 
-<!-- SPLASH -->
-<div id="splash" class="fixed inset-0 z-[100] bg-[#0e6b43] text-white flex flex-col items-center justify-center">
-<div class="w-24 h-24 bg-white rounded-[28px] flex items-center justify-center text-5xl">🤝</div>
-<h1 class="mt-6 text-2xl font-black">صندوق أم تريبات</h1><p class="mt-2 text-white/80 text-sm">التكافلي الاجتماعي - غير ربحي</p>
-<p class="mt-1 text-xs text-white/60">«نتكافل لنقوى... ونتعاون لنستمر»</p>
-<div class="mt-10 w-40 h-1.5 bg-white/20 rounded-full overflow-hidden"><div class="h-full bg-white w-full animate-pulse"></div></div>
-</div>
-
-<!-- HEADER -->
-<header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b px-4 py-3 flex justify-between items-center">
-<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-black">ص</div><div><p class="font-black text-[14px] leading-none">صندوق أم تريبات</p><p class="text-[10px] text-zinc-500 mt-1">النسخة الرسمية - 5,000 أسرة / 10,000 فرد</p></div></div>
-<button onclick="openVerify()" class="text-xs font-bold bg-zinc-900 text-white px-3 py-2 rounded-full">تحقق دخول</button>
+<header class="bg-[#0e6b43] text-white p-4 text-center sticky top-0 z-10">
+<h1 class="font-black text-lg">صندوق التكافل - أم تريبات</h1>
+<p class="text-xs opacity-80">كشوفات الاشتراكات ولمسات الوفاء</p>
 </header>
 
-<!-- MAIN CONTENT -->
-<div class="max-w-6xl mx-auto px-4 pt-5">
-
-<!-- PAGE 1: HOME -->
-<div id="page-home" class="page active">
-<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-<div class="bg-white rounded-2xl p-4 shadow-sm border"><p class="text-[11px] text-zinc-500 font-bold">الأعضاء</p><p id="c1" class="text-2xl font-black mt-1">0</p></div>
-<div class="bg-white rounded-2xl p-4 shadow-sm border"><p class="text-[11px] text-zinc-500 font-bold">الرصيد</p><p id="c2" class="text-2xl font-black mt-1 text-emerald-700">0</p></div>
-<div class="bg-white rounded-2xl p-4 shadow-sm border"><p class="text-[11px] text-zinc-500 font-bold">المحصل</p><p id="c3" class="text-2xl font-black mt-1">0</p></div>
-<div class="bg-zinc-900 text-white rounded-2xl p-4 shadow-sm"><p class="text-[11px] text-zinc-400 font-bold">المصروف</p><p id="c4" class="text-2xl font-black mt-1">0</p></div>
+<div class="flex gap-2 p-3 max-w-lg mx-auto">
+<button onclick="showTab('oct')" id="btn-oct" class="flex-1 bg-[#0e6b43] text-white py-3 rounded-xl font-bold">أكتوبر (53)</button>
+<button onclick="showTab('nov')" id="btn-nov" class="flex-1 bg-white border py-3 rounded-xl font-bold">نوفمبر (21)</button>
+<button onclick="showTab('wafa')" id="btn-wafa" class="flex-1 bg-white border py-3 rounded-xl font-bold">وفاء</button>
 </div>
 
-<div class="mt-5 grid md:grid-cols-2 gap-4">
-<div class="bg-white rounded-[20px] p-5 border shadow-sm"><h3 class="font-black text-sm">➕ تسجيل عضو جديد - مادة 4</h3><div class="mt-3 space-y-2"><select id="in_type" class="w-full bg-zinc-50 border rounded-xl p-3 text-sm font-bold"><option value="5000">أسرة - 5,000 ج</option><option value="10000">فرد - 10,000 ج</option></select><input id="in_name" class="w-full bg-zinc-50 border rounded-xl p-3 text-sm" placeholder="الاسم الثلاثي"><input id="in_phone" class="w-full bg-zinc-50 border rounded-xl p-3 text-sm" placeholder="واتساب"><button onclick="actAddMember()" class="w-full bg-emerald-700 text-white rounded-xl py-3 font-black text-sm">حفظ العضو + تحقق</button></div></div>
-<div class="bg-white rounded-[20px] p-5 border shadow-sm"><h3 class="font-black text-sm">💳 سداد اشتراك - مادة 5</h3><div class="mt-3 space-y-2"><select id="in_pay_member" class="w-full bg-zinc-50 border rounded-xl p-3 text-sm font-bold"></select><input id="in_pay_amt" type="number" class="w-full bg-zinc-50 border rounded-xl p-3 text-sm" placeholder="المبلغ"><select id="in_pay_way" class="w-full bg-zinc-50 border rounded-xl p-3 text-sm"><option>بنكك - 1234567 (عدل الرقم)</option><option>كاش - أمين المال</option><option>تبرع</option></select><button onclick="actPay()" class="w-full bg-zinc-900 text-white rounded-xl py-3 font-black text-sm">تأكيد السداد</button></div></div>
+<div class="max-w-lg mx-auto p-3">
+
+<div id="tab-oct" class="bg-white rounded-2xl border p-3">
+<h2 class="font-black mb-2">اشتراك أكتوبر - 53 عضو ✅</h2>
+<div class="text-sm leading-7 h-[60vh] overflow-auto" id="oct-list"></div>
+<div class="mt-3 p-3 bg-emerald-50 rounded-xl font-bold">الإجمالي: 53 × 10,000 = 530,000 جنيه</div>
 </div>
 
-<div class="mt-5 bg-white rounded-[20px] p-5 border shadow-sm"><h3 class="font-black text-sm">🆘 طلب مساعدة - مادة 7 / حفظ كرامة م13</h3><div class="mt-3 grid md:grid-cols-3 gap-2"><input id="in_h_name" class="bg-zinc-50 border rounded-xl p-3 text-sm" placeholder="اسم الحالة (سري)"><select id="in_h_type" class="bg-zinc-50 border rounded-xl p-3 text-sm"><option>مرض - أولا</option><option>وفاة - ثانيا</option><option>حادث/حريق - ثالثا</option><option>إنسانية - رابعا</option></select><select id="in_h_prio" class="bg-zinc-50 border rounded-xl p-3 text-sm"><option>عاجل - م9</option><option>عادي</option></select></div><textarea id="in_h_det" class="mt-2 w-full bg-zinc-50 border rounded-xl p-3 text-sm" placeholder="التفاصيل السرية..."></textarea><button onclick="actHelp()" class="mt-2 w-full bg-emerald-700 text-white rounded-xl py-3 font-black text-sm">إرسال للإدارة (سري)</button></div>
+<div id="tab-nov" class="bg-white rounded-2xl border p-3 hidden">
+<h2 class="font-black mb-2">اشتراك نوفمبر - 21 عضو ✅</h2>
+<div class="text-sm leading-7 h-[60vh] overflow-auto" id="nov-list"></div>
+<div class="mt-3 p-3 bg-emerald-50 rounded-xl font-bold">الإجمالي: 21 × 10,000 = 210,000 جنيه</div>
 </div>
 
-<!-- PAGE 2: MEMBERS -->
-<div id="page-members" class="page"><div class="bg-white rounded-[20px] p-5 border shadow-sm"><div class="flex justify-between"><h3 class="font-black">👥 الأعضاء - بحث وتحقق</h3><input id="search" oninput="render()" placeholder="بحث..." class="bg-zinc-50 border rounded-full px-3 py-1 text-xs"></div><div class="mt-4 overflow-auto"><table class="w-full text-sm"><tbody id="tbl_members"></tbody></table></div></div></div>
-
-<!-- PAGE 3: LEDGER -->
-<div id="page-ledger" class="page"><div class="bg-white rounded-[20px] p-5 border shadow-sm"><div class="flex justify-between"><h3 class="font-black">📊 كشف حساب شفاف - مادة 12</h3><button onclick="doExport()" class="text-xs bg-zinc-50 border px-3 py-1 rounded-full font-bold">Excel</button></div><div class="mt-4 overflow-auto max-h-[60vh]"><table class="w-full text-[13px]"><thead class="text-xs text-zinc-400 border-b"><tr><th class="text-right pb-2">تاريخ</th><th class="text-right pb-2">بيان موثق</th><th class="text-right pb-2">داخل</th><th class="text-right pb-2">خارج</th></tr></thead><tbody id="tbl_ledger"></tbody></table></div></div></div>
-
-<!-- PAGE 4: ABOUT -->
-<div id="page-about" class="page"><div class="bg-white rounded-[20px] p-6 border shadow-sm"><h3 class="font-black">📜 اللائحة - 19 مادة</h3><p class="mt-3 text-sm leading-7 text-zinc-700"><b>م3:</b> عضوية لكل أبناء أم تريبات<br><b>م4:</b> أسرة 5,000 - فرد 10,000<br><b>م5:</b> السداد أول كل شهر<br><b>م7:</b> أنواع الدعم: مرض، وفاة، حادث، إنساني<br><b>م8:</b> لا صرف إلا بقرار موثق<br><b>م9:</b> الحالات الحرجة أولوية<br><b>م12:</b> كشف حساب دوري شفاف<br><b>م13:</b> سرية وحفظ كرامة - يمنع تصوير المستفيد</p></div></div>
-
+<div id="tab-wafa" class="bg-white rounded-2xl border p-3 hidden">
+<h2 class="font-black mb-2">لمسة وفاء - 3,311,000 ج</h2>
+<p class="text-xs text-zinc-500">حساب 8783249 - أيمن يوسف</p>
+<div class="text-sm leading-7 h-[60vh] overflow-auto mt-2">58 متبرع - المجموع 3,311,000 ج (القائمة الكاملة عندك)</div>
 </div>
 
-<!-- BOTTOM NAV - التطبيق -->
-<nav class="fixed bottom-0 left-0 right-0 bg-white border-t px-2 py-2 flex justify-around z-40">
-<button onclick="go('home')" id="nav-home" class="nav-active flex flex-col items-center px-4 py-2 rounded-xl"><span class="text-xl">🏠</span><span class="text-[10px] font-bold mt-1">الرئيسية</span></button>
-<button onclick="go('members')" id="nav-members" class="flex flex-col items-center px-4 py-2 rounded-xl text-zinc-400"><span class="text-xl">👥</span><span class="text-[10px] font-bold mt-1">الأعضاء</span></button>
-<button onclick="go('ledger')" id="nav-ledger" class="flex flex-col items-center px-4 py-2 rounded-xl text-zinc-400"><span class="text-xl">📊</span><span class="text-[10px] font-bold mt-1">الكشف</span></button>
-<button onclick="go('about')" id="nav-about" class="flex flex-col items-center px-4 py-2 rounded-xl text-zinc-400"><span class="text-xl">📜</span><span class="text-[10px] font-bold mt-1">اللائحة</span></button>
-</nav>
-
-<!-- VERIFY MODAL -->
-<div id="verifyModal" class="fixed inset-0 bg-black/50 z-[60] hidden flex items-center justify-center p-6"><div class="bg-white rounded-[24px] p-6 w-full max-w-sm"><h3 class="font-black">🔐 تحقق الإدارة</h3><p class="text-xs text-zinc-500 mt-1">ادخل PIN الإدارة للعمليات الحساسة</p><input id="pin" type="password" class="mt-4 w-full bg-zinc-50 border rounded-xl p-3 text-center text-lg tracking-widest" placeholder="••••"><p class="text-[11px] mt-2 text-zinc-400">الافتراضي: 1234 - يمكنك تغييره في الكود</p><div class="grid grid-cols-2 gap-2 mt-4"><button onclick="closeVerify()" class="bg-zinc-100 rounded-xl py-3 font-bold">إلغاء</button><button onclick="checkPin()" class="bg-emerald-700 text-white rounded-xl py-3 font-bold">دخول</button></div></div></div>
+</div>
 
 <script>
-setTimeout(()=>document.getElementById('splash').style.display='none',1800);
-let MEM=JSON.parse(localStorage.getItem('um2_members')||'[]'), TR=JSON.parse(localStorage.getItem('um2_trans')||'[]'), IS_ADMIN=false;
-const save=()=>{localStorage.setItem('um2_members',JSON.stringify(MEM));localStorage.setItem('um2_trans',JSON.stringify(TR));render()};
-function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('nav-active'));document.getElementById('nav-'+p).classList.add('nav-active')}
-function openVerify(){document.getElementById('verifyModal').classList.remove('hidden')} function closeVerify(){document.getElementById('verifyModal').classList.add('hidden')}
-function checkPin(){if(document.getElementById('pin').value==='1234'){IS_ADMIN=true;closeVerify();alert('✅ تم التحقق - انت الآن إدارة');}else alert('PIN خطأ')}
-function actAddMember(){let n=document.getElementById('in_name').value.trim(),p=document.getElementById('in_phone').value.trim(),t=document.getElementById('in_type');if(!n)return alert('اكتب الاسم');MEM.unshift({id:Date.now(),name:n,phone:p,fee:+t.value,type:t.options[t.selectedIndex].text,verified:false,date:new Date().toLocaleDateString('ar-SD')});save();document.getElementById('in_name').value='';document.getElementById('in_phone').value='';}
-function actPay(){let m=document.getElementById('in_pay_member').value,a=+document.getElementById('in_pay_amt').value,w=document.getElementById('in_pay_way').value;if(!a||!m)return alert('اختار عضو ومبلغ');TR.unshift({date:new Date().toLocaleDateString('ar-SD')+' '+new Date().toLocaleTimeString('ar-SD'),desc:`سداد: ${m} [${w}]`,inn:a,out:0});save();document.getElementById('in_pay_amt').value='';}
-function actHelp(){let n=document.getElementById('in_h_name').value,d=document.getElementById('in_h_det').value,ty=document.getElementById('in_h_type').value,pr=document.getElementById('in_h_prio').value;if(!n||!d)return alert('اكمل البيانات');TR.unshift({date:new Date().toLocaleDateString('ar-SD'),desc:`طلب ${pr} - ${ty} - ${n} (سري - م13)`,inn:0,out:0});save();document.getElementById('in_h_name').value='';document.getElementById('in_h_det').value='';alert('تم إرسال الطلب بسرية');}
-function render(){let q=(document.getElementById('search')?.value||'').toLowerCase();let f=MEM.filter(m=>m.name.toLowerCase().includes(q));let inn=0,out=0;TR.forEach(x=>{inn+=x.inn;out+=x.out});document.getElementById('c1').innerText=MEM.length;document.getElementById('c2').innerText=(inn-out).toLocaleString();document.getElementById('c3').innerText=inn.toLocaleString();document.getElementById('c4').innerText=out.toLocaleString();document.getElementById('in_pay_member').innerHTML=MEM.map(m=>`<option>${m.name}</option>`).join('')||'<option>سجل عضو أولا</option>';document.getElementById('tbl_members').innerHTML=f.map(m=>`<tr class="border-b"><td class="py-3"><b>${m.name}</b><div class="text-[11px] text-zinc-400">${m.date} - ${m.phone} - ${m.type} ${m.verified?'✅ موثق':''}</div></td><td class="py-3 text-left"><button onclick="verifyMember(${m.id})" class="text-[11px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-1 rounded-full font-bold">تحقق</button> <button onclick="delMember(${m.id})" class="text-[11px] bg-red-50 text-red-600 border px-2 py-1 rounded-full">حذف</button></td></tr>`).join('')||'<tr><td class="py-10 text-center text-zinc-400">لا يوجد أعضاء</td></tr>';document.getElementById('tbl_ledger').innerHTML=TR.map(t=>`<tr class="border-b"><td class="py-2.5 text-[11px] text-zinc-500">${t.date}</td><td class="py-2.5 font-medium">${t.desc}</td><td class="py-2.5 text-emerald-600 font-black">${t.inn?t.inn.toLocaleString():''}</td><td class="py-2.5 text-red-600 font-black">${t.out?t.out.toLocaleString():''}</td></tr>`).join('')||'<tr><td colspan=4 class="py-10 text-center text-zinc-400">الكشف فاضي</td></tr>';}
-function verifyMember(id){if(!IS_ADMIN)return openVerify();let m=MEM.find(x=>x.id===id);if(m){m.verified=true;save();}} function delMember(id){if(!IS_ADMIN)return openVerify();if(!confirm('حذف؟'))return;MEM=MEM.filter(x=>x.id!==id);save();}
-function doExport(){let csv='التاريخ,البيان,داخل,خارج\n'+TR.map(r=>`${r.date},"${r.desc}",${r.inn},${r.out}`).join('\n');let b=new Blob([csv],{type:'text/csv'});let a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='sandoq.csv';a.click();}
-render();
+const oct = ["محمد احمد حمدان","عمر بشير هجو","التهامي عبدالله","مجاهد صلاح","محمد انورالسادات","أحمد يحيى","بشرى الأمين","أمير ادم","منذر عبدالله","محمد ادم","محمد الباقر عثمان","بادي عبد القادر","منتصر الصديق","امين بابكر","أحمد عبدالوهاب","النور محمد يوسف (4 شهور)","الأمين محمد الأمين","رضوان بلال","خاطر عبدالله","مصطفي النذير","عبد الحميد الزبير","الزبير رجب","أمال عوض","مهند محمد (شهرين)","السر عثمان","حمدالنيل حامد","فتح الرحمن الجعلي","حامد اسماعيل","ضياء الدين","محمد عبدالله بخيت 100ألف","عبدالله محمد عبدالله 100ألف","احمدجادالله 100","ابتهال شهرين","مرتضى آدم","صديق عبد الرحيم","السيده عبدالقادر","مجتبى حامد","منذر جلال","محمد محجوب","شوقى موسي","رافع الامين","عبير عبدالله","الزكي بابكر","أيمن يحيى","محمد الامين 30","سعد مصعب","عبدالعظيم 3شهور","عبدالله الأمين","موسى الطاهر","الفاضل ميرغني","يونس السماني","بشير محمد احمد","ميساء يوسف"];
+const nov = ["عبدالعظيم عباس","مهند محمد احمد","النور محمد يوسف","محمد عبدالله بخيت","عبدالله محمد عبدالله","احمد يحي علي","شوقي موسى","زكي بابكر","بشري الأمين","رفع الأمين","محمد الباقر","د. ابتهال عبدالغني","أحمد جادالله","محمد ابراهيم جباره","امين بابكر","السر عثمان","عبدالله الأمين ادم","محمد الامين زين العابدين","الأمين محمد الأمين"];
+document.getElementById('oct-list').innerHTML = oct.map((n,i)=>`${i+1}/ ${n} ✅`).join('<br>');
+document.getElementById('nov-list').innerHTML = nov.map((n,i)=>`${i+1}/ ${n} ✅`).join('<br>');
+function showTab(t){
+document.getElementById('tab-oct').classList.add('hidden');
+document.getElementById('tab-nov').classList.add('hidden');
+document.getElementById('tab-wafa').classList.add('hidden');
+document.getElementById('tab-'+t).classList.remove('hidden');
+document.getElementById('btn-oct').className = t=='oct' ? 'flex-1 bg-[#0e6b43] text-white py-3 rounded-xl font-bold' : 'flex-1 bg-white border py-3 rounded-xl font-bold';
+document.getElementById('btn-nov').className = t=='nov' ? 'flex-1 bg-[#0e6b43] text-white py-3 rounded-xl font-bold' : 'flex-1 bg-white border py-3 rounded-xl font-bold';
+document.getElementById('btn-wafa').className = t=='wafa' ? 'flex-1 bg-[#0e6b43] text-white py-3 rounded-xl font-bold' : 'flex-1 bg-white border py-3 rounded-xl font-bold';
+}
 </script>
 </body>
 </html>
