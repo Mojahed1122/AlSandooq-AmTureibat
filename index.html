@@ -1,510 +1,149 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#126b62">
-  <title>الصندوق التكافلي بأمتريبات</title>
-
-  <style>
-    :root {
-      --green: #126b62;
-      --green-dark: #0b514a;
-      --mint: #e8f5f1;
-      --gold: #d5a848;
-      --bg: #f4f7f6;
-      --text: #1f2c2a;
-      --muted: #6b7976;
-      --border: #e1e9e6;
-      --white: #fff;
-      --danger: #b42318;
-      --shadow: 0 8px 24px rgba(20, 65, 58, .08);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
-    }
-
-    button, input, select, textarea { font: inherit; }
-
-    .app-header {
-      color: white;
-      padding: 22px 18px 18px;
-      background: linear-gradient(135deg, var(--green-dark), var(--green));
-    }
-
-    .header-inner, main {
-      width: min(100% - 28px, 980px);
-      margin: auto;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .brand-icon {
-      display: grid;
-      place-items: center;
-      width: 48px;
-      height: 48px;
-      border-radius: 15px;
-      background: rgba(255,255,255,.15);
-      font-size: 25px;
-    }
-
-    h1 { font-size: 20px; margin: 0 0 4px; }
-    .subtitle { margin: 0; color: #d6ebe6; font-size: 13px; }
-
-    nav {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 16px 0 2px;
-      scrollbar-width: thin;
-    }
-
-    nav button {
-      flex: 0 0 auto;
-      border: 1px solid rgba(255,255,255,.25);
-      color: white;
-      background: rgba(255,255,255,.09);
-      padding: 9px 14px;
-      border-radius: 999px;
-      cursor: pointer;
-    }
-
-    nav button.active, nav button:hover {
-      background: white;
-      color: var(--green-dark);
-    }
-
-    main { padding: 20px 0 40px; }
-
-    .page-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin: 2px 0 16px;
-    }
-
-    .page-title h2 { margin: 0; font-size: 21px; }
-    .muted { color: var(--muted); font-size: 13px; }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .card, .stat {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-    }
-
-    .stat { padding: 16px; }
-    .stat-label { color: var(--muted); font-size: 13px; }
-    .stat-value { font-size: 25px; font-weight: 750; margin-top: 7px; color: var(--green-dark); }
-    .card { padding: 16px; margin-bottom: 14px; }
-    .card h3 { margin: 0 0 12px; font-size: 16px; }
-
-    form {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .field { display: flex; flex-direction: column; gap: 6px; }
-    .field.full { grid-column: 1 / -1; }
-
-    label { color: #42514e; font-size: 13px; font-weight: 650; }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 11px 12px;
-      border: 1px solid #d5dfdc;
-      border-radius: 10px;
-      background: #fff;
-      color: var(--text);
-      outline: none;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(18,107,98,.1);
-    }
-
-    textarea { min-height: 84px; resize: vertical; }
-
-    .actions {
-      grid-column: 1 / -1;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .btn {
-      border: 0;
-      border-radius: 10px;
-      padding: 10px 15px;
-      background: var(--green);
-      color: white;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .btn:hover { background: var(--green-dark); }
-    .btn.secondary { color: var(--green-dark); background: var(--mint); }
-    .btn.danger { background: #fff0ef; color: var(--danger); }
-    .btn.small { padding: 7px 10px; font-size: 12px; }
-
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; min-width: 580px; }
-    th, td {
-      padding: 11px 9px;
-      text-align: right;
-      border-bottom: 1px solid var(--border);
-      font-size: 13px;
-      vertical-align: middle;
-    }
-    th { color: var(--muted); font-weight: 700; background: #fbfcfc; }
-
-    .badge {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 999px;
-      background: var(--mint);
-      color: var(--green-dark);
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .badge.warn { background: #fff5dc; color: #815b0b; }
-    .badge.red { background: #fff0ef; color: var(--danger); }
-    .empty {
-      color: var(--muted);
-      padding: 22px 10px;
-      text-align: center;
-      border: 1px dashed #cbd8d4;
-      border-radius: 12px;
-      background: #fbfdfc;
-    }
-
-    .regulation { border-right: 4px solid var(--gold); }
-    .regulation p { white-space: pre-wrap; line-height: 1.8; margin-bottom: 0; }
-    .footer-note {
-      color: var(--muted);
-      text-align: center;
-      font-size: 12px;
-      padding: 8px;
-    }
-
-    @media (max-width: 720px) {
-      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
-    @media (max-width: 520px) {
-      .grid, form { grid-template-columns: 1fr; }
-      .field.full, .actions { grid-column: auto; }
-      .page-title h2 { font-size: 19px; }
-      .stat { padding: 13px; }
-      .stat-value { font-size: 22px; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#126b62">
+<title>الصندوق التكافلي بأمتريبات</title>
+<style>
+:root{--g:#126b62;--gd:#0b514a;--bg:#f4f7f6;--ink:#20302d;--muted:#697874;--line:#e1e9e6;--white:#fff;--gold:#d5a848}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif}
+header{background:linear-gradient(135deg,var(--gd),var(--g));color:white;padding:20px 14px}
+.wrap{width:min(100% - 24px,900px);margin:auto}
+.brand{font-size:20px;font-weight:800}
+.sub{font-size:13px;color:#d9eeea;margin-top:4px}
+nav{display:flex;gap:8px;overflow:auto;margin-top:17px}
+nav button{white-space:nowrap;border:1px solid #ffffff55;background:#ffffff16;color:white;border-radius:20px;padding:9px 13px}
+nav button.on{background:#fff;color:var(--gd)}
+main{padding:18px 0 36px}
+h2{font-size:20px;margin:0 0 14px}
+h3{font-size:16px;margin:0 0 12px}
+.card,.stat{background:var(--white);border:1px solid var(--line);border-radius:15px;padding:15px;margin-bottom:13px;box-shadow:0 5px 18px #164c4410}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:13px}
+.stat{margin:0}.label,.muted{color:var(--muted);font-size:13px}.num{font-size:24px;font-weight:800;color:var(--gd);margin-top:5px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.field{display:flex;flex-direction:column;gap:5px}.full,.actions{grid-column:1/-1}
+label{font-size:13px;font-weight:650}
+input,select,textarea{width:100%;padding:11px;border:1px solid #d5dfdc;border-radius:10px;background:white;font:inherit}
+textarea{min-height:80px;resize:vertical}
+button{font:inherit;cursor:pointer}
+.btn{border:0;border-radius:10px;padding:10px 14px;background:var(--g);color:white;font-weight:700}
+.btn.light{background:#e8f5f1;color:var(--gd)}.btn.delete{background:#fff0ef;color:#a52a21}
+.btn.small{padding:7px 10px;font-size:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse;min-width:540px}
+th,td{text-align:right;border-bottom:1px solid var(--line);padding:10px 8px;font-size:13px}
+th{color:var(--muted)}.scroll{overflow:auto}
+.empty{padding:18px;text-align:center;border:1px dashed #cbd8d4;border-radius:11px;color:var(--muted)}
+.rule{border-right:4px solid var(--gold)}.rule p{white-space:pre-wrap;line-height:1.8}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:10px}
+@media(max-width:520px){form{grid-template-columns:1fr}.full,.actions{grid-column:auto}}
+</style>
 </head>
-
 <body>
-  <header class="app-header">
-    <div class="header-inner">
-      <div class="brand">
-        <div class="brand-icon" aria-hidden="true">🤝</div>
-        <div>
-          <h1>الصندوق التكافلي بأمتريبات</h1>
-          <p class="subtitle">نموذج أولي لإدارة شؤون الصندوق</p>
-        </div>
-      </div>
-
-      <nav id="navigation" aria-label="القائمة الرئيسية">
-        <button class="active" data-page="dashboard">الرئيسية</button>
-        <button data-page="members">الأعضاء</button>
-        <button data-page="subscriptions">الاشتراكات</button>
-        <button data-page="requests">طلبات المساعدة</button>
-        <button data-page="regulations">اللوائح الداخلية</button>
-      </nav>
-    </div>
-  </header>
-
-  <main id="app"></main>
-
-  <div class="footer-note">
-    نسخة تجريبية محلية — البيانات محفوظة في هذا المتصفح على هذا الجهاز فقط.
+<header>
+  <div class="wrap">
+    <div class="brand">🤝 الصندوق التكافلي بأمتريبات</div>
+    <div class="sub">نموذج تجريبي لإدارة شؤون الصندوق</div>
+    <nav id="nav">
+      <button class="on" data-page="home">الرئيسية</button>
+      <button data-page="members">الأعضاء</button>
+      <button data-page="dues">الاشتراكات</button>
+      <button data-page="requests">طلبات المساعدة</button>
+      <button data-page="rules">اللوائح الداخلية</button>
+    </nav>
   </div>
+</header>
+<main class="wrap" id="app"></main>
+<footer>نسخة تجريبية محلية — لا تستخدمها لحفظ بيانات حقيقية أو حساسة.</footer>
 
-  <script>
-    const STORAGE_KEY = "amtrabat_takaful_app_v1";
+<script>
+(function(){
+"use strict";
+const KEY="amtrabat_fund_demo_v1";
+const blank={members:[],dues:[],requests:[],rules:[]};
+let data;
+try{data=JSON.parse(localStorage.getItem(KEY)||"null")||blank}catch(e){data=blank}
+let page="home";
+const app=document.getElementById("app");
 
-    const emptyState = {
-      members: [],
-      subscriptions: [],
-      requests: [],
-      regulations: []
-    };
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){alert("تعذر حفظ البيانات في المتصفح.")}}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function memberName(mid){let m=data.members.find(x=>x.id===mid);return m?m.name:"—"}
+function options(){return data.members.map(m=>`<option value="${esc(m.id)}">${esc(m.name)} (${esc(m.no)})</option>`).join("")}
+function money(n){return Number(n||0).toLocaleString("ar")}
+function setPage(p){page=p;document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.page===p));render()}
+document.getElementById("nav").addEventListener("click",e=>{let b=e.target.closest("[data-page]");if(b)setPage(b.dataset.page)});
 
-    let state = loadState();
-    let currentPage = "dashboard";
-
-    function loadState() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        return saved ? { ...emptyState, ...JSON.parse(saved) } : structuredClone(emptyState);
-      } catch {
-        return { ...emptyState };
-      }
-    }
-
-    function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-
-    function uid() {
-      return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-    }
-
-    function esc(value) {
-      return String(value ?? "").replace(/[&<>"']/g, ch => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;",
-        '"': "&quot;", "'": "&#39;"
-      }[ch]));
-    }
-
-    function today() {
-      return new Date().toISOString().slice(0, 10);
-    }
-
-    function money(value) {
-      return Number(value || 0).toLocaleString("ar", {
-        maximumFractionDigits: 2
-      });
-    }
-
-    function memberName(id) {
-      return state.members.find(m => m.id === id)?.name || "عضو غير معروف";
-    }
-
-    function statusLabel(status) {
-      const labels = {
-        active: "نشط",
-        pending: "قيد المراجعة",
-        suspended: "موقوف",
-        paid: "مدفوع",
-        unpaid: "غير مدفوع",
-        submitted: "جديد",
-        under_review: "قيد المراجعة",
-        approved: "مقبول",
-        rejected: "مرفوض",
-        published: "منشورة",
-        draft: "مسودة",
-        archived: "مؤرشفة"
-      };
-      return labels[status] || status || "—";
-    }
-
-    function badgeClass(status) {
-      if (["rejected", "suspended"].includes(status)) return "badge red";
-      if (["pending", "unpaid", "under_review", "draft"].includes(status)) return "badge warn";
-      return "badge";
-    }
-
-    function setPage(page) {
-      currentPage = page;
-      document.querySelectorAll("nav button").forEach(button => {
-        button.classList.toggle("active", button.dataset.page === page);
-      });
-      render();
-    }
-
-    document.getElementById("navigation").addEventListener("click", event => {
-      const button = event.target.closest("[data-page]");
-      if (button) setPage(button.dataset.page);
-    });
-
-    document.getElementById("app").addEventListener("submit", event => {
-      event.preventDefault();
-      const form = event.target;
-
-      if (form.id === "memberForm") {
-        const data = new FormData(form);
-        state.members.push({
-          id: uid(),
-          name: data.get("name").trim(),
-          phone: data.get("phone").trim(),
-          number: data.get("number").trim(),
-          status: data.get("status"),
-          createdAt: today()
-        });
-        saveState();
-        render();
-        return;
-      }
-
-      if (form.id === "subscriptionForm") {
-        const data = new FormData(form);
-        state.subscriptions.push({
-          id: uid(),
-          memberId: data.get("memberId"),
-          period: data.get("period").trim(),
-          amount: Number(data.get("amount")),
-          status: data.get("status"),
-          createdAt: today()
-        });
-        saveState();
-        render();
-        return;
-      }
-
-      if (form.id === "requestForm") {
-        const data = new FormData(form);
-        state.requests.push({
-          id: uid(),
-          memberId: data.get("memberId"),
-          type: data.get("type").trim(),
-          amount: Number(data.get("amount") || 0),
-          reason: data.get("reason").trim(),
-          status: "submitted",
-          createdAt: today()
-        });
-        saveState();
-        render();
-        return;
-      }
-
-      if (form.id === "regulationForm") {
-        const data = new FormData(form);
-        state.regulations.push({
-          id: uid(),
-          title: data.get("title").trim(),
-          text: data.get("text").trim(),
-          status: data.get("status"),
-          createdAt: today()
-        });
-        saveState();
-        render();
-      }
-    });
-
-    document.getElementById("app").addEventListener("click", event => {
-      const deleteButton = event.target.closest("[data-delete-type]");
-      if (!deleteButton) return;
-
-      const type = deleteButton.dataset.deleteType;
-      const id = deleteButton.dataset.id;
-
-      if (!confirm("متأكد من حذف هذا السجل؟")) return;
-
-      state[type] = state[type].filter(item => item.id !== id);
-      saveState();
-      render();
-    });
-
-    document.getElementById("app").addEventListener("change", event => {
-      const select = event.target.closest("[data-status-type]");
-      if (!select) return;
-
-      const item = state[select.dataset.statusType]
-        .find(row => row.id === select.dataset.id);
-
-      if (item) {
-        item.status = select.value;
-        saveState();
-        render();
-      }
-    });
-
-    function memberOptions(selectedId = "") {
-      if (state.members.length === 0) {
-        return '<option value="">أضف عضوًا أولًا</option>';
-      }
-
-      return state.members.map(member =>
-        `<option value="${esc(member.id)}" ${member.id === selectedId ? "selected" : ""}>
-          ${esc(member.name)} — ${esc(member.number)}
-        </option>`
-      ).join("");
-    }
-
-    function dashboardPage() {
-      const totalMembers = state.members.length;
-      const activeMembers = state.members.filter(m => m.status === "active").length;
-      const paid = state.subscriptions
-        .filter(s => s.status === "paid")
-        .reduce((sum, s) => sum + Number(s.amount || 0), 0);
-      const openRequests = state.requests
-        .filter(r => ["submitted", "under_review"].includes(r.status)).length;
-
-      return `
-        <div class="page-title">
-          <div>
-            <h2>الرئيسية</h2>
-            <div class="muted">ملخص بيانات الصندوق المسجلة على هذا الجهاز</div>
-          </div>
-          <button class="btn secondary" id="exportButton">تنزيل نسخة احتياطية</button>
-        </div>
-
-        <section class="stats">
-          <div class="stat"><div class="stat-label">إجمالي الأعضاء</div><div class="stat-value">${totalMembers}</div></div>
-          <div class="stat"><div class="stat-label">الأعضاء النشطون</div><div class="stat-value">${activeMembers}</div></div>
-          <div class="stat"><div class="stat-label">اشتراكات مدفوعة</div><div class="stat-value">${money(paid)}</div></div>
-          <div class="stat"><div class="stat-label">طلبات قيد المتابعة</div><div class="stat-value">${openRequests}</div></div>
-        </section>
-
-        <section class="card">
-          <h3>ابدأ من القائمة</h3>
-          <p class="muted">أضف أعضاء الصندوق، وسجّل الاشتراكات والطلبات، ثم أضف اللوائح الداخلية.</p>
-          <div class="actions">
-            <button class="btn" data-shortcut="members">إضافة عضو</button>
-            <button class="btn secondary" data-shortcut="subscriptions">تسجيل اشتراك</button>
-            <button class="btn secondary" data-shortcut="requests">طلب مساعدة</button>
-          </div>
-        </section>
-
-        <section class="card">
-          <h3>ملاحظات الاستخدام</h3>
-          <ul class="muted">
-            <li>المعلومات لا تخرج من متصفح هذا الجهاز.</li>
-            <li>زر النسخة الاحتياطية ينزّل ملف بيانات JSON.</li>
-            <li>هذه النسخة للتجربة وليست نظامًا آمنًا لإدارة أموال حقيقية.</li>
-          </ul>
-        </section>
-      `;
-    }
-
-    function membersPage() {
-      const rows = state.members.map(member => `
-        <tr>
-          <td>${esc(member.number)}</td>
-          <td>${esc(member.name)}</td>
-          <td>${esc(member.phone || "—")}</td>
-          <td>
-            <select data-status-type="members" data-id="${esc(member.id)}">
-              ${["active", "pending", "suspended"].map(status =>
-                `<option value="${status}" ${member.status === status ? "selected" : ""}>
-                  ${statusLabel(status)}
-                </option>`
-              ).
+function home(){
+ let paid=data.dues.filter(x=>x.status==="paid").reduce((s,x)=>s+Number(x.amount||0),0);
+ let open=data.requests.filter(x=>x.status==="جديد"||x.status==="قيد المراجعة").length;
+ return `<h2>الرئيسية</h2>
+ <section class="stats">
+ <div class="stat"><div class="label">عدد الأعضاء</div><div class="num">${data.members.length}</div></div>
+ <div class="stat"><div class="label">اشتراكات مدفوعة</div><div class="num">${money(paid)}</div></div>
+ <div class="stat"><div class="label">طلبات المساعدة</div><div class="num">${data.requests.length}</div></div>
+ <div class="stat"><div class="label">طلبات قيد المتابعة</div><div class="num">${open}</div></div>
+ </section>
+ <section class="card"><h3>مرحبًا بك</h3><p class="muted">استخدم القائمة لإضافة الأعضاء والاشتراكات والطلبات واللوائح. البيانات محفوظة على هذا الجهاز فقط.</p>
+ <button class="btn light" id="backup">تنزيل نسخة احتياطية</button>
+ <button class="btn light" id="clear">مسح بيانات التجربة</button></section>`;
+}
+function members(){
+ let rows=data.members.map(m=>`<tr><td>${esc(m.no)}</td><td>${esc(m.name)}</td><td>${esc(m.phone||"—")}</td><td>${esc(m.status)}</td><td><button class="btn delete small" data-del="members" data-id="${esc(m.id)}">حذف</button></td></tr>`).join("");
+ return `<h2>الأعضاء</h2><section class="card"><h3>إضافة عضو</h3>
+ <form id="memberForm">
+ <div class="field"><label>اسم العضو</label><input name="name" required></div>
+ <div class="field"><label>رقم العضوية</label><input name="no" required></div>
+ <div class="field"><label>رقم الهاتف</label><input name="phone" type="tel"></div>
+ <div class="field"><label>الحالة</label><select name="status"><option>نشط</option><option>قيد المراجعة</option><option>موقوف</option></select></div>
+ <div class="actions"><button class="btn">حفظ العضو</button></div></form></section>
+ <section class="card"><h3>قائمة الأعضاء</h3>${rows?`<div class="scroll"><table><thead><tr><th>رقم العضوية</th><th>الاسم</th><th>الهاتف</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody>${rows}</tbody></table></div>`:`<div class="empty">لا يوجد أعضاء بعد.</div>`}</section>`;
+}
+function dues(){
+ let rows=data.dues.map(x=>`<tr><td>${esc(memberName(x.mid))}</td><td>${esc(x.period)}</td><td>${money(x.amount)}</td><td>${esc(x.status)}</td><td><button class="btn delete small" data-del="dues" data-id="${esc(x.id)}">حذف</button></td></tr>`).join("");
+ return `<h2>الاشتراكات</h2><section class="card"><h3>تسجيل اشتراك</h3>
+ ${data.members.length?`<form id="dueForm">
+ <div class="field"><label>العضو</label><select name="mid" required>${options()}</select></div>
+ <div class="field"><label>الفترة</label><input name="period" required placeholder="مثال: يناير 2026"></div>
+ <div class="field"><label>المبلغ</label><input name="amount" type="number" min="0.01" step="0.01" required></div>
+ <div class="field"><label>حالة السداد</label><select name="status"><option value="unpaid">غير مدفوع</option><option value="paid">مدفوع</option></select></div>
+ <div class="actions"><button class="btn">حفظ الاشتراك</button></div></form>`:`<div class="empty">أضف عضوًا أولًا.</div>`}</section>
+ <section class="card"><h3>سجل الاشتراكات</h3>${rows?`<div class="scroll"><table><thead><tr><th>العضو</th><th>الفترة</th><th>المبلغ</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody>${rows}</tbody></table></div>`:`<div class="empty">لا توجد اشتراكات مسجلة.</div>`}</section>`;
+}
+function requests(){
+ let rows=data.requests.map(x=>`<tr><td>${esc(memberName(x.mid))}</td><td>${esc(x.type)}</td><td>${money(x.amount)}</td><td>${esc(x.status)}</td><td><button class="btn delete small" data-del="requests" data-id="${esc(x.id)}">حذف</button></td></tr>`).join("");
+ return `<h2>طلبات المساعدة</h2><section class="card"><h3>إضافة طلب</h3>
+ ${data.members.length?`<form id="requestForm">
+ <div class="field"><label>العضو</label><select name="mid" required>${options()}</select></div>
+ <div class="field"><label>نوع المساعدة</label><input name="type" required></div>
+ <div class="field"><label>المبلغ المطلوب</label><input name="amount" type="number" min="0" step="0.01"></div>
+ <div class="field full"><label>سبب الطلب</label><textarea name="reason" required></textarea></div>
+ <div class="actions"><button class="btn">حفظ الطلب</button></div></form>`:`<div class="empty">أضف عضوًا أولًا.</div>`}</section>
+ <section class="card"><h3>الطلبات المسجلة</h3>${rows?`<div class="scroll"><table><thead><tr><th>العضو</th><th>نوع المساعدة</th><th>المبلغ</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody>${rows}</tbody></table></div>`:`<div class="empty">لا توجد طلبات مساعدة.</div>`}</section>`;
+}
+function rules(){
+ let cards=data.rules.map(r=>`<article class="card rule"><h3>${esc(r.title)}</h3><div class="muted">${esc(r.status)} — ${esc(r.date)}</div><p>${esc(r.text)}</p><button class="btn delete small" data-del="rules" data-id="${esc(r.id)}">حذف</button></article>`).join("");
+ return `<h2>اللوائح الداخلية</h2><section class="card"><h3>إضافة لائحة أو إعلان</h3>
+ <form id="ruleForm"><div class="field"><label>العنوان</label><input name="title" required></div>
+ <div class="field"><label>الحالة</label><select name="status"><option>منشورة</option><option>مسودة</option></select></div>
+ <div class="field full"><label>النص</label><textarea name="text" required></textarea></div>
+ <div class="actions"><button class="btn">حفظ اللائحة</button></div></form></section>
+ ${cards||'<div class="empty">لا توجد لوائح مضافة.</div>'}`;
+}
+function render(){
+ app.innerHTML=({home,members,dues,requests,rules}[page]||home)();
+ const backup=document.getElementById("backup");
+ if(backup)backup.onclick=()=>{
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="نسخة-الصندوق.json";a.click();URL.revokeObjectURL(a.href);
+ };
+ const clear=document.getElementById("clear");
+ if(clear)clear.onclick=()=>{if(confirm("تمسح كل بيانات التجربة؟")){data={members:[],dues:[],requests:[],rules:[]};save();render()}};
+}
+app.addEventListener("submit",e=>{
+ e.preventDefault();const f=e.target;const x=Object.fromEntries(new FormData(f).entries());
+ if(f.id==="memberForm")data.members.push({id:id(),name:x.name.trim(),no:x.no.trim(),phone:x.phone.trim(),status:x.status});
+ if(f.id==="
