@@ -1,392 +1,510 @@
--- =========================================================
--- 1) الأنواع الأساسية
--- =========================================================
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#126b62">
+  <title>الصندوق التكافلي بأمتريبات</title>
 
-create type public.app_role as enum (
-  'member', 'treasurer', 'reviewer', 'admin'
-);
+  <style>
+    :root {
+      --green: #126b62;
+      --green-dark: #0b514a;
+      --mint: #e8f5f1;
+      --gold: #d5a848;
+      --bg: #f4f7f6;
+      --text: #1f2c2a;
+      --muted: #6b7976;
+      --border: #e1e9e6;
+      --white: #fff;
+      --danger: #b42318;
+      --shadow: 0 8px 24px rgba(20, 65, 58, .08);
+    }
 
-create type public.member_status as enum (
-  'pending', 'active', 'suspended', 'closed'
-);
+    * { box-sizing: border-box; }
 
-create type public.due_status as enum (
-  'unpaid', 'partially_paid', 'paid', 'waived'
-);
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+    }
 
-create type public.payment_status as enum (
-  'pending', 'confirmed', 'rejected', 'refunded'
-);
+    button, input, select, textarea { font: inherit; }
 
-create type public.payment_method as enum (
-  'cash', 'bank_transfer', 'electronic', 'other'
-);
+    .app-header {
+      color: white;
+      padding: 22px 18px 18px;
+      background: linear-gradient(135deg, var(--green-dark), var(--green));
+    }
 
-create type public.help_request_status as enum (
-  'submitted', 'under_review', 'approved', 'rejected',
-  'paid', 'cancelled'
-);
+    .header-inner, main {
+      width: min(100% - 28px, 980px);
+      margin: auto;
+    }
 
-create type public.journal_status as enum (
-  'draft', 'posted', 'void'
-);
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-create type public.regulation_status as enum (
-  'draft', 'published', 'archived'
-);
+    .brand-icon {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
+      background: rgba(255,255,255,.15);
+      font-size: 25px;
+    }
 
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    .subtitle { margin: 0; color: #d6ebe6; font-size: 13px; }
 
--- =========================================================
--- 2) المستخدمون والصلاحيات
--- كلمات المرور يديرها Supabase Auth ولا تُخزّن هنا
--- =========================================================
+    nav {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 16px 0 2px;
+      scrollbar-width: thin;
+    }
 
-create table public.profiles (
-  id uuid primary key references auth.users(id) on delete cascade,
-  full_name text not null default '',
-  phone text,
-  email text,
-  active boolean not null default true,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
+    nav button {
+      flex: 0 0 auto;
+      border: 1px solid rgba(255,255,255,.25);
+      color: white;
+      background: rgba(255,255,255,.09);
+      padding: 9px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
 
-create table public.user_roles (
-  user_id uuid not null references public.profiles(id) on delete cascade,
-  role public.app_role not null,
-  granted_by uuid references public.profiles(id) on delete set null,
-  created_at timestamptz not null default now(),
-  primary key (user_id, role)
-);
+    nav button.active, nav button:hover {
+      background: white;
+      color: var(--green-dark);
+    }
 
--- إنشاء ملف تلقائيًا عند تسجيل مستخدم جديد في Supabase Auth
-create or replace function public.handle_new_user()
-returns trigger
-language plpgsql
-security definer
-set search_path = public
-as $$
-begin
-  insert into public.profiles (id, full_name, phone, email)
-  values (
-    new.id,
-    coalesce(new.raw_user_meta_data ->> 'full_name', ''),
-    new.phone,
-    new.email
-  )
-  on conflict (id) do nothing;
+    main { padding: 20px 0 40px; }
 
-  return new;
-end;
-$$;
+    .page-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 2px 0 16px;
+    }
 
-create trigger on_auth_user_created
-after insert on auth.users
-for each row execute procedure public.handle_new_user();
+    .page-title h2 { margin: 0; font-size: 21px; }
+    .muted { color: var(--muted); font-size: 13px; }
 
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
 
--- =========================================================
--- 3) الأعضاء وخطط الاشتراك والاستحقاقات
--- =========================================================
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
 
-create table public.members (
-  id uuid primary key default gen_random_uuid(),
-  profile_id uuid unique references public.profiles(id) on delete set null,
-  membership_number text not null unique,
-  status public.member_status not null default 'pending',
-  join_date date,
-  address text,
-  notes text,
-  created_by uuid references public.profiles(id) on delete set null,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
+    .card, .stat {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
 
-create table public.contribution_plans (
-  id uuid primary key default gen_random_uuid(),
-  name text not null,
-  amount numeric(12,2) not null check (amount > 0),
-  frequency text not null check (
-    frequency in ('monthly', 'quarterly', 'yearly', 'one_time')
-  ),
-  active boolean not null default true,
-  effective_from date not null default current_date,
-  effective_to date,
-  created_at timestamptz not null default now(),
-  check (effective_to is null or effective_to >= effective_from)
-);
+    .stat { padding: 16px; }
+    .stat-label { color: var(--muted); font-size: 13px; }
+    .stat-value { font-size: 25px; font-weight: 750; margin-top: 7px; color: var(--green-dark); }
+    .card { padding: 16px; margin-bottom: 14px; }
+    .card h3 { margin: 0 0 12px; font-size: 16px; }
 
-create table public.dues (
-  id uuid primary key default gen_random_uuid(),
-  member_id uuid not null references public.members(id) on delete restrict,
-  plan_id uuid references public.contribution_plans(id) on delete set null,
-  period_start date not null,
-  period_end date not null,
-  amount_due numeric(12,2) not null check (amount_due > 0),
-  due_date date,
-  status public.due_status not null default 'unpaid',
-  created_at timestamptz not null default now(),
-  check (period_end >= period_start),
-  unique (member_id, period_start, period_end)
-);
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
 
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
 
--- =========================================================
--- 4) التحصيل وربطه بالاشتراكات
--- =========================================================
+    label { color: #42514e; font-size: 13px; font-weight: 650; }
 
-create table public.payments (
-  id uuid primary key default gen_random_uuid(),
-  member_id uuid not null references public.members(id) on delete restrict,
-  amount numeric(12,2) not null check (amount > 0),
-  method public.payment_method not null default 'cash',
-  status public.payment_status not null default 'pending',
-  received_at timestamptz,
-  received_by uuid references public.profiles(id) on delete set null,
-  reference_number text,
-  note text,
-  idempotency_key text unique,
-  created_at timestamptz not null default now()
-);
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #d5dfdc;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+    }
 
-create table public.payment_allocations (
-  id uuid primary key default gen_random_uuid(),
-  payment_id uuid not null references public.payments(id) on delete restrict,
-  due_id uuid not null references public.dues(id) on delete restrict,
-  amount numeric(12,2) not null check (amount > 0),
-  created_at timestamptz not null default now(),
-  unique (payment_id, due_id)
-);
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(18,107,98,.1);
+    }
 
+    textarea { min-height: 84px; resize: vertical; }
 
--- =========================================================
--- 5) طلبات المساعدة ومراجعتها وصرفها
--- =========================================================
+    .actions {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
 
-create table public.help_requests (
-  id uuid primary key default gen_random_uuid(),
-  member_id uuid not null references public.members(id) on delete restrict,
-  request_type text not null,
-  requested_amount numeric(12,2)
-    check (requested_amount is null or requested_amount > 0),
-  reason text not null,
-  status public.help_request_status not null default 'submitted',
-  submitted_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 15px;
+      background: var(--green);
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
 
-create table public.request_reviews (
-  id uuid primary key default gen_random_uuid(),
-  request_id uuid not null
-    references public.help_requests(id) on delete cascade,
-  reviewer_id uuid references public.profiles(id) on delete set null,
-  decision text not null
-    check (decision in ('under_review', 'approved', 'rejected')),
-  note text,
-  decided_at timestamptz not null default now()
-);
+    .btn:hover { background: var(--green-dark); }
+    .btn.secondary { color: var(--green-dark); background: var(--mint); }
+    .btn.danger { background: #fff0ef; color: var(--danger); }
+    .btn.small { padding: 7px 10px; font-size: 12px; }
 
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 580px; }
+    th, td {
+      padding: 11px 9px;
+      text-align: right;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      vertical-align: middle;
+    }
+    th { color: var(--muted); font-weight: 700; background: #fbfcfc; }
 
--- =========================================================
--- 6) السجل المالي
--- =========================================================
+    .badge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var(--mint);
+      color: var(--green-dark);
+      font-size: 12px;
+      white-space: nowrap;
+    }
 
-create table public.ledger_accounts (
-  id uuid primary key default gen_random_uuid(),
-  code text not null unique,
-  name text not null,
-  account_type text not null check (
-    account_type in ('asset', 'liability', 'income', 'expense', 'equity')
-  ),
-  active boolean not null default true
-);
+    .badge.warn { background: #fff5dc; color: #815b0b; }
+    .badge.red { background: #fff0ef; color: var(--danger); }
+    .empty {
+      color: var(--muted);
+      padding: 22px 10px;
+      text-align: center;
+      border: 1px dashed #cbd8d4;
+      border-radius: 12px;
+      background: #fbfdfc;
+    }
 
-create table public.journal_entries (
-  id uuid primary key default gen_random_uuid(),
-  entry_date date not null default current_date,
-  description text not null,
-  status public.journal_status not null default 'draft',
-  source_type text,
-  source_id uuid,
-  created_by uuid references public.profiles(id) on delete set null,
-  created_at timestamptz not null default now(),
-  posted_at timestamptz,
-  unique (source_type, source_id)
-);
+    .regulation { border-right: 4px solid var(--gold); }
+    .regulation p { white-space: pre-wrap; line-height: 1.8; margin-bottom: 0; }
+    .footer-note {
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+      padding: 8px;
+    }
 
-create table public.journal_lines (
-  id uuid primary key default gen_random_uuid(),
-  journal_entry_id uuid not null
-    references public.journal_entries(id) on delete cascade,
-  account_id uuid not null
-    references public.ledger_accounts(id) on delete restrict,
-  debit numeric(12,2) not null default 0 check (debit >= 0),
-  credit numeric(12,2) not null default 0 check (credit >= 0),
-  description text,
-  check (
-    (debit > 0 and credit = 0)
-    or (credit > 0 and debit = 0)
-  )
-);
+    @media (max-width: 720px) {
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
 
-create table public.disbursements (
-  id uuid primary key default gen_random_uuid(),
-  request_id uuid not null
-    references public.help_requests(id) on delete restrict,
-  amount numeric(12,2) not null check (amount > 0),
-  method public.payment_method not null default 'bank_transfer',
-  paid_at timestamptz,
-  paid_by uuid references public.profiles(id) on delete set null,
-  reference_number text,
-  journal_entry_id uuid unique
-    references public.journal_entries(id) on delete set null,
-  note text,
-  created_at timestamptz not null default now()
-);
+    @media (max-width: 520px) {
+      .grid, form { grid-template-columns: 1fr; }
+      .field.full, .actions { grid-column: auto; }
+      .page-title h2 { font-size: 19px; }
+      .stat { padding: 13px; }
+      .stat-value { font-size: 22px; }
+    }
+  </style>
+</head>
 
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">🤝</div>
+        <div>
+          <h1>الصندوق التكافلي بأمتريبات</h1>
+          <p class="subtitle">نموذج أولي لإدارة شؤون الصندوق</p>
+        </div>
+      </div>
 
--- =========================================================
--- 7) المرفقات والإشعارات وسجل التغييرات
--- =========================================================
+      <nav id="navigation" aria-label="القائمة الرئيسية">
+        <button class="active" data-page="dashboard">الرئيسية</button>
+        <button data-page="members">الأعضاء</button>
+        <button data-page="subscriptions">الاشتراكات</button>
+        <button data-page="requests">طلبات المساعدة</button>
+        <button data-page="regulations">اللوائح الداخلية</button>
+      </nav>
+    </div>
+  </header>
 
-create table public.attachments (
-  id uuid primary key default gen_random_uuid(),
-  owner_user_id uuid references public.profiles(id) on delete set null,
-  request_id uuid references public.help_requests(id) on delete cascade,
-  payment_id uuid references public.payments(id) on delete cascade,
-  storage_path text not null,
-  file_name text,
-  content_type text,
-  uploaded_at timestamptz not null default now(),
-  check (request_id is not null or payment_id is not null)
-);
+  <main id="app"></main>
 
-create table public.notifications (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references public.profiles(id) on delete cascade,
-  title text not null,
-  message text not null,
-  read_at timestamptz,
-  created_at timestamptz not null default now()
-);
+  <div class="footer-note">
+    نسخة تجريبية محلية — البيانات محفوظة في هذا المتصفح على هذا الجهاز فقط.
+  </div>
 
-create table public.audit_logs (
-  id bigint generated always as identity primary key,
-  actor_user_id uuid references public.profiles(id) on delete set null,
-  action text not null,
-  entity_type text not null,
-  entity_id uuid,
-  details jsonb not null default '{}'::jsonb,
-  created_at timestamptz not null default now()
-);
+  <script>
+    const STORAGE_KEY = "amtrabat_takaful_app_v1";
 
+    const emptyState = {
+      members: [],
+      subscriptions: [],
+      requests: [],
+      regulations: []
+    };
 
--- =========================================================
--- 8) اللوائح الداخلية وإصداراتها وإقرار الاطلاع
--- =========================================================
+    let state = loadState();
+    let currentPage = "dashboard";
 
-create table public.regulations (
-  id uuid primary key default gen_random_uuid(),
-  title text not null,
-  description text,
-  status public.regulation_status not null default 'draft',
-  created_by uuid references public.profiles(id) on delete set null,
-  published_by uuid references public.profiles(id) on delete set null,
-  published_at timestamptz,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? { ...emptyState, ...JSON.parse(saved) } : structuredClone(emptyState);
+      } catch {
+        return { ...emptyState };
+      }
+    }
 
--- مسار ملف PDF في Supabase Storage، وليس الملف نفسه
-create table public.regulation_versions (
-  id uuid primary key default gen_random_uuid(),
-  regulation_id uuid not null
-    references public.regulations(id) on delete cascade,
-  version_number integer not null check (version_number > 0),
-  storage_path text not null,
-  file_name text not null,
-  effective_from date,
-  uploaded_by uuid references public.profiles(id) on delete set null,
-  uploaded_at timestamptz not null default now(),
-  unique (regulation_id, version_number)
-);
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
 
--- يُستخدم إذا كان مطلوبًا تسجيل أن العضو اطّلع على إصدار معين
-create table public.regulation_acknowledgements (
-  id uuid primary key default gen_random_uuid(),
-  regulation_version_id uuid not null
-    references public.regulation_versions(id) on delete cascade,
-  member_id uuid not null
-    references public.members(id) on delete cascade,
-  acknowledged_at timestamptz not null default now(),
-  unique (regulation_version_id, member_id)
-);
+    function uid() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    }
 
+    function esc(value) {
+      return String(value ?? "").replace(/[&<>"']/g, ch => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;",
+        '"': "&quot;", "'": "&#39;"
+      }[ch]));
+    }
 
--- =========================================================
--- 9) دوال مساعدة للصلاحيات
--- =========================================================
+    function today() {
+      return new Date().toISOString().slice(0, 10);
+    }
 
-create or replace function public.has_role(required_role public.app_role)
-returns boolean
-language sql
-stable
-security definer
-set search_path = public
-as $$
-  select exists (
-    select 1
-    from public.user_roles
-    where user_id = auth.uid()
-      and role = required_role
-  );
-$$;
+    function money(value) {
+      return Number(value || 0).toLocaleString("ar", {
+        maximumFractionDigits: 2
+      });
+    }
 
-create or replace function public.is_staff()
-returns boolean
-language sql
-stable
-security definer
-set search_path = public
-as $$
-  select
-    public.has_role('admin')
-    or public.has_role('treasurer')
-    or public.has_role('reviewer');
-$$;
+    function memberName(id) {
+      return state.members.find(m => m.id === id)?.name || "عضو غير معروف";
+    }
 
-create or replace function public.current_member_id()
-returns uuid
-language sql
-stable
-security definer
-set search_path = public
-as $$
-  select id
-  from public.members
-  where profile_id = auth.uid()
-  limit 1;
-$$;
+    function statusLabel(status) {
+      const labels = {
+        active: "نشط",
+        pending: "قيد المراجعة",
+        suspended: "موقوف",
+        paid: "مدفوع",
+        unpaid: "غير مدفوع",
+        submitted: "جديد",
+        under_review: "قيد المراجعة",
+        approved: "مقبول",
+        rejected: "مرفوض",
+        published: "منشورة",
+        draft: "مسودة",
+        archived: "مؤرشفة"
+      };
+      return labels[status] || status || "—";
+    }
 
+    function badgeClass(status) {
+      if (["rejected", "suspended"].includes(status)) return "badge red";
+      if (["pending", "unpaid", "under_review", "draft"].includes(status)) return "badge warn";
+      return "badge";
+    }
 
--- =========================================================
--- 10) الفهارس
--- =========================================================
+    function setPage(page) {
+      currentPage = page;
+      document.querySelectorAll("nav button").forEach(button => {
+        button.classList.toggle("active", button.dataset.page === page);
+      });
+      render();
+    }
 
-create index idx_members_status
-  on public.members(status);
+    document.getElementById("navigation").addEventListener("click", event => {
+      const button = event.target.closest("[data-page]");
+      if (button) setPage(button.dataset.page);
+    });
 
-create index idx_dues_member_period
-  on public.dues(member_id, period_start);
+    document.getElementById("app").addEventListener("submit", event => {
+      event.preventDefault();
+      const form = event.target;
 
-create index idx_dues_status_date
-  on public.dues(status, due_date);
+      if (form.id === "memberForm") {
+        const data = new FormData(form);
+        state.members.push({
+          id: uid(),
+          name: data.get("name").trim(),
+          phone: data.get("phone").trim(),
+          number: data.get("number").trim(),
+          status: data.get("status"),
+          createdAt: today()
+        });
+        saveState();
+        render();
+        return;
+      }
 
-create index idx_payments_member_date
-  on public.payments(member_id, created_at desc);
+      if (form.id === "subscriptionForm") {
+        const data = new FormData(form);
+        state.subscriptions.push({
+          id: uid(),
+          memberId: data.get("memberId"),
+          period: data.get("period").trim(),
+          amount: Number(data.get("amount")),
+          status: data.get("status"),
+          createdAt: today()
+        });
+        saveState();
+        render();
+        return;
+      }
 
-create index idx_payments_status
-  on public.payments(status);
+      if (form.id === "requestForm") {
+        const data = new FormData(form);
+        state.requests.push({
+          id: uid(),
+          memberId: data.get("memberId"),
+          type: data.get("type").trim(),
+          amount: Number(data.get("amount") || 0),
+          reason: data.get("reason").trim(),
+          status: "submitted",
+          createdAt: today()
+        });
+        saveState();
+        render();
+        return;
+      }
 
-create index idx_help_requests_member_date
-  on public.help_requests(member_id, submitted_at
+      if (form.id === "regulationForm") {
+        const data = new FormData(form);
+        state.regulations.push({
+          id: uid(),
+          title: data.get("title").trim(),
+          text: data.get("text").trim(),
+          status: data.get("status"),
+          createdAt: today()
+        });
+        saveState();
+        render();
+      }
+    });
+
+    document.getElementById("app").addEventListener("click", event => {
+      const deleteButton = event.target.closest("[data-delete-type]");
+      if (!deleteButton) return;
+
+      const type = deleteButton.dataset.deleteType;
+      const id = deleteButton.dataset.id;
+
+      if (!confirm("متأكد من حذف هذا السجل؟")) return;
+
+      state[type] = state[type].filter(item => item.id !== id);
+      saveState();
+      render();
+    });
+
+    document.getElementById("app").addEventListener("change", event => {
+      const select = event.target.closest("[data-status-type]");
+      if (!select) return;
+
+      const item = state[select.dataset.statusType]
+        .find(row => row.id === select.dataset.id);
+
+      if (item) {
+        item.status = select.value;
+        saveState();
+        render();
+      }
+    });
+
+    function memberOptions(selectedId = "") {
+      if (state.members.length === 0) {
+        return '<option value="">أضف عضوًا أولًا</option>';
+      }
+
+      return state.members.map(member =>
+        `<option value="${esc(member.id)}" ${member.id === selectedId ? "selected" : ""}>
+          ${esc(member.name)} — ${esc(member.number)}
+        </option>`
+      ).join("");
+    }
+
+    function dashboardPage() {
+      const totalMembers = state.members.length;
+      const activeMembers = state.members.filter(m => m.status === "active").length;
+      const paid = state.subscriptions
+        .filter(s => s.status === "paid")
+        .reduce((sum, s) => sum + Number(s.amount || 0), 0);
+      const openRequests = state.requests
+        .filter(r => ["submitted", "under_review"].includes(r.status)).length;
+
+      return `
+        <div class="page-title">
+          <div>
+            <h2>الرئيسية</h2>
+            <div class="muted">ملخص بيانات الصندوق المسجلة على هذا الجهاز</div>
+          </div>
+          <button class="btn secondary" id="exportButton">تنزيل نسخة احتياطية</button>
+        </div>
+
+        <section class="stats">
+          <div class="stat"><div class="stat-label">إجمالي الأعضاء</div><div class="stat-value">${totalMembers}</div></div>
+          <div class="stat"><div class="stat-label">الأعضاء النشطون</div><div class="stat-value">${activeMembers}</div></div>
+          <div class="stat"><div class="stat-label">اشتراكات مدفوعة</div><div class="stat-value">${money(paid)}</div></div>
+          <div class="stat"><div class="stat-label">طلبات قيد المتابعة</div><div class="stat-value">${openRequests}</div></div>
+        </section>
+
+        <section class="card">
+          <h3>ابدأ من القائمة</h3>
+          <p class="muted">أضف أعضاء الصندوق، وسجّل الاشتراكات والطلبات، ثم أضف اللوائح الداخلية.</p>
+          <div class="actions">
+            <button class="btn" data-shortcut="members">إضافة عضو</button>
+            <button class="btn secondary" data-shortcut="subscriptions">تسجيل اشتراك</button>
+            <button class="btn secondary" data-shortcut="requests">طلب مساعدة</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <h3>ملاحظات الاستخدام</h3>
+          <ul class="muted">
+            <li>المعلومات لا تخرج من متصفح هذا الجهاز.</li>
+            <li>زر النسخة الاحتياطية ينزّل ملف بيانات JSON.</li>
+            <li>هذه النسخة للتجربة وليست نظامًا آمنًا لإدارة أموال حقيقية.</li>
+          </ul>
+        </section>
+      `;
+    }
+
+    function membersPage() {
+      const rows = state.members.map(member => `
+        <tr>
+          <td>${esc(member.number)}</td>
+          <td>${esc(member.name)}</td>
+          <td>${esc(member.phone || "—")}</td>
+          <td>
+            <select data-status-type="members" data-id="${esc(member.id)}">
+              ${["active", "pending", "suspended"].map(status =>
+                `<option value="${status}" ${member.status === status ? "selected" : ""}>
+                  ${statusLabel(status)}
+                </option>`
+              ).
